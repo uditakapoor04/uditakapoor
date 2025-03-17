@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PDF Viewer - Udita Kapoor Portfolio</title>
+    <style>
+        body, html {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            overflow: hidden;
+            background-color: #0a0a0a;
+            color: white;
+            font-family: 'Helvetica', 'Arial', sans-serif;
+        }
+        
+        .header {
+            padding: 10px 20px;
+            background-color: rgba(0, 0, 0, 0.8);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 100;
+        }
+        
+        .header h1 {
+            font-size: 18px;
+            margin: 0;
+        }
+        
+        .back-button {
+            background-color: #ca9d75;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+            text-decoration: none;
+            display: inline-block;
+        }
+        
+        .back-button:hover {
+            background-color: #b58c65;
+        }
+        
+        #pdf-container {
+            position: absolute;
+            top: 50px;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            overflow: hidden;
+        }
+        
+        #pdf-viewer {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+        
+        .loader {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 18px;
+            color: white;
+        }
+        
+        .spinner {
+            width: 40px;
+            height: 40px;
+            border: 4px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top-color: #ca9d75;
+            animation: spin 1s ease-in-out infinite;
+            margin: 0 auto 15px;
+        }
+        
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1 id="pdf-title">Loading PDF...</h1>
+        <a href="index.html" class="back-button">Back to Portfolio</a>
+    </div>
+    
+    <div id="pdf-container">
+        <div class="loader" id="loader">
+            <div class="spinner"></div>
+            <div>Loading PDF...</div>
+        </div>
+        <iframe id="pdf-viewer" style="display:none;"></iframe>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Get PDF path from URL
+            const params = new URLSearchParams(window.location.search);
+            const pdfPath = params.get('file');
+            const pdfTitle = params.get('title') || 'PDF Document';
+            
+            // Set the page title
+            document.title = pdfTitle + ' - Udita Kapoor Portfolio';
+            document.getElementById('pdf-title').textContent = pdfTitle;
+            
+            if (!pdfPath) {
+                document.getElementById('loader').innerHTML = 'Error: No PDF file specified';
+                return;
+            }
+            
+            const iframe = document.getElementById('pdf-viewer');
+            const loader = document.getElementById('loader');
+            
+            // Set the iframe source
+            iframe.src = pdfPath;
+            
+            // Show the PDF viewer when loaded
+            iframe.onload = function() {
+                loader.style.display = 'none';
+                iframe.style.display = 'block';
+            };
+            
+            // Handle errors
+            iframe.onerror = function() {
+                loader.innerHTML = 'Error loading PDF. <a href="' + pdfPath + '" target="_blank">Click here to download instead</a>.';
+            };
+        });
+    </script>
+</body>
+</html> 

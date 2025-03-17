@@ -1,7 +1,20 @@
-# Node modules
+# Node.js dependencies and logs
 node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
 
-# OS generated files
+# Environment variables
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Server-side files (not needed for GitHub Pages)
+# server.js - commented out because we'll modify it for static usage
+
+# OS files
 .DS_Store
 .DS_Store?
 ._*

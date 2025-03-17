@@ -3,6 +3,13 @@ const app = express();
 const path = require('path');
 const nodemailer = require('nodemailer');
 
+// Load environment variables if .env file exists
+try {
+    require('dotenv').config();
+} catch (err) {
+    console.log('No .env file found, using defaults or environment variables');
+}
+
 // Middleware to parse form data
 app.use(express.static(__dirname));
 app.use(express.urlencoded({ extended: true }));
@@ -16,7 +23,7 @@ try {
     transporter = nodemailer.createTransport({
         service: 'gmail',
         auth: {
-            user: 'udita.kapoor04@gmail.com', // The Gmail account that will SEND the emails
+            user: process.env.EMAIL_USER || 'your-email@gmail.com', // The Gmail account that will SEND the emails
             pass: process.env.EMAIL_PASSWORD || 'your-app-password' // Use environment variable for security
         }
     });

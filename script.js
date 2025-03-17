@@ -66,7 +66,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     description: "A contemporary design collection inspired by Diesel's urban aesthetic and innovative fabric treatments."
                 },
                 {
-                    path: "./images/visual.pdf/FINAL PROJECT.pdf",
+                    path: "./images/visual.pdf/FINAL_PROJECT.pdf",
                     title: "Final Project",
                     description: "Comprehensive fashion design project showcasing integrated design concepts and execution."
                 },
@@ -605,7 +605,7 @@ document.addEventListener('DOMContentLoaded', function() {
                                         <div class="pdf-content">
                                             <h4 class="pdf-title">Diesel Collection</h4>
                                             <p class="pdf-description">A contemporary design collection inspired by Diesel's urban aesthetic and innovative fabric treatments.</p>
-                                            <a href="#" onclick="openPdf('images/visual.pdf/Kapoor- Diesel collection.pdf'); return false;" class="pdf-view-btn">View Project</a>
+                                            <a href="#" onclick="openPdf('images/visual.pdf/Kapoor-Diesel_collection.pdf'); return false;" class="pdf-view-btn">View Project</a>
                                         </div>
                                     </div>
                                     
@@ -620,7 +620,7 @@ document.addEventListener('DOMContentLoaded', function() {
                                         <div class="pdf-content">
                                             <h4 class="pdf-title">Madeleine Vionnet Study</h4>
                                             <p class="pdf-description">An in-depth analysis of Madeleine Vionnet's pioneering approach to bias cut and draping techniques.</p>
-                                            <a href="#" onclick="openPdf('images/visual.pdf/Madeleine Vionnet Udita Kapoor .pdf'); return false;" class="pdf-view-btn">View Project</a>
+                                            <a href="#" onclick="openPdf('images/visual.pdf/Madeleine_Vionnet_Udita_Kapoor.pdf'); return false;" class="pdf-view-btn">View Project</a>
                                         </div>
                                     </div>
                                     
@@ -650,7 +650,7 @@ document.addEventListener('DOMContentLoaded', function() {
                                         <div class="pdf-content">
                                             <h4 class="pdf-title">Final Project</h4>
                                             <p class="pdf-description">Comprehensive fashion design project showcasing integrated design concepts and execution.</p>
-                                            <a href="#" onclick="openPdf('images/visual.pdf/FINAL PROJECT.pdf'); return false;" class="pdf-view-btn">View Project</a>
+                                            <a href="#" onclick="openPdf('images/visual.pdf/FINAL_PROJECT.pdf'); return false;" class="pdf-view-btn">View Project</a>
                                         </div>
                                     </div>
                                 </div>
@@ -1090,7 +1090,10 @@ document.addEventListener('DOMContentLoaded', function() {
                                             <div class="pdf-content">
                                                 <h4 class="pdf-title">FINAL Illustrator Project</h4>
                                                 <p class="pdf-description">A comprehensive digital design project showcasing technical mastery of Adobe Illustrator for fashion visualization.</p>
-                                                <a href="#" onclick="openPdf('images/digital/FINAL illustrator.pdf'); return false;" class="pdf-view-btn">View Project</a>
+                                                <a href="#" onclick="alert('This large PDF file (123MB) will be hosted on Google Drive or similar service when deployed to GitHub Pages. Replace this with your cloud storage link.'); return false;" class="pdf-view-btn">View Project</a>
+                                                <!-- For GitHub Pages deployment, replace with:
+                                                <a href="#" onclick="window.open('https://drive.google.com/file/YOUR_FILE_ID/view', '_blank'); return false;" class="pdf-view-btn">View Project</a>
+                                                -->
                                             </div>
                                         </div>
                                         
@@ -1132,7 +1135,7 @@ document.addEventListener('DOMContentLoaded', function() {
                                             <div class="pdf-content">
                                                 <h4 class="pdf-title">Final Specification Project</h4>
                                                 <p class="pdf-description">Technical specifications and detailed digital documentation for fashion design implementation.</p>
-                                                <a href="#" onclick="openPdf('images/digital/UKapoor_FF245FinalSpec.PDF .pdf'); return false;" class="pdf-view-btn">View Project</a>
+                                                <a href="#" onclick="openPdf('images/digital/UKapoor_FF245FinalSpec.PDF.pdf'); return false;" class="pdf-view-btn">View Project</a>
                                             </div>
                                         </div>
                                     </div>
@@ -1995,7 +1998,7 @@ document.addEventListener('DOMContentLoaded', function() {
                                         <div class="pdf-content">
                                             <h4 class="pdf-title">Princess Line Dress Draping</h4>
                                             <p class="pdf-description">A comprehensive documentation of the draping process for princess line dresses, showcasing various techniques and design iterations.</p>
-                                            <a href="#" onclick="openPdf('./images/draping/Your paragraph text.pdf'); return false;" class="pdf-view-btn">View Project</a>
+                                            <a href="#" onclick="openPdf('./images/draping/Princess_Line_Dress.pdf'); return false;" class="pdf-view-btn">View Project</a>
                                         </div>
                                     </div>
                                 </div>
@@ -2120,110 +2123,64 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // EmailJS initialization
     (function() {
-        emailjs.init("YOUR_ACTUAL_PUBLIC_KEY");
+        // Disabled EmailJS since we're using FormSubmit.co and server-side email handling
+        // emailjs.init("YOUR_ACTUAL_PUBLIC_KEY");
     })();
 
     // Handle form submission without reCAPTCHA
     const contactForm = document.getElementById('contactForm');
     if (contactForm) {
-        // Check if the form should use AJAX or direct submission
-        const useAjax = false; // Set to true if you want to use your Express server instead of FormSubmit
-        
-        if (useAjax) {
-            contactForm.addEventListener('submit', function(e) {
-                e.preventDefault();
-                
-                const formData = new FormData(contactForm);
-                const formDataObj = {};
-                formData.forEach((value, key) => {
-                    formDataObj[key] = value;
-                });
-                
-                // Show loading state
-                const submitButton = contactForm.querySelector('button[type="submit"]');
-                const originalButtonText = submitButton.textContent;
-                submitButton.textContent = 'Sending...';
-                submitButton.disabled = true;
-                
-                // Send data to server
-                fetch('/submit-form', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify(formDataObj)
-                })
-                .then(response => response.json())
-                .then(data => {
-                    // Reset form
-                    contactForm.reset();
-                    
+        contactForm.addEventListener('submit', function(event) {
+            event.preventDefault();
+            
+            // Hide any previous messages
+            const formSuccess = document.getElementById('formSuccess');
+            const formError = document.getElementById('formError');
+            
+            if (formSuccess) formSuccess.classList.add('hidden');
+            if (formError) formError.classList.add('hidden');
+            
+            // Collect form data
+            const formData = {
+                name: document.getElementById('name').value,
+                email: document.getElementById('email').value,
+                subject: document.getElementById('subject').value,
+                message: document.getElementById('message').value
+            };
+            
+            console.log('Sending form data:', formData);
+            
+            // Send data to server
+            fetch('/submit-form', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(formData)
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log('Server response:', data);
+                if (data.success) {
                     // Show success message
-                    document.getElementById('formSuccess').classList.remove('hidden');
-                    
-                    // Reset button
-                    submitButton.textContent = originalButtonText;
-                    submitButton.disabled = false;
-                    
-                    // Hide success message after some time
-                    setTimeout(() => {
-                        document.getElementById('formSuccess').classList.add('hidden');
-                    }, 5000);
-                })
-                .catch(error => {
-                    console.error('Error submitting form:', error);
-                    
+                    if (formSuccess) formSuccess.classList.remove('hidden');
+                    contactForm.reset();
+                } else {
                     // Show error message
-                    document.getElementById('formError').classList.remove('hidden');
-                    
-                    // Reset button
-                    submitButton.textContent = originalButtonText;
-                    submitButton.disabled = false;
-                    
-                    // Hide error message after some time
-                    setTimeout(() => {
-                        document.getElementById('formError').classList.add('hidden');
-                    }, 5000);
-                });
+                    if (formError) {
+                        formError.textContent = data.message || 'Failed to send message. Please try again later.';
+                        formError.classList.remove('hidden');
+                    }
+                }
+            })
+            .catch(error => {
+                console.error('Error sending form:', error);
+                if (formError) {
+                    formError.textContent = 'An error occurred. Please try again later.';
+                    formError.classList.remove('hidden');
+                }
             });
-        } else {
-            // Using FormSubmit.co (default)
-            // The default HTML form will handle submission
-            // Simply add a tracking mechanism for the success message
-            contactForm.addEventListener('submit', function() {
-                localStorage.setItem('formSubmitted', 'true');
-                // FormSubmit.co will handle the actual submission and redirect
-            });
-        }
-    }
-
-    // Check for form submission status (after redirect)
-    const urlParams = new URLSearchParams(window.location.search);
-    const formStatus = urlParams.get('form');
-    
-    if (formStatus === 'success' || localStorage.getItem('formSubmitted') === 'true') {
-        const formSuccess = document.getElementById('formSuccess');
-        if (formSuccess) {
-            formSuccess.classList.remove('hidden');
-            localStorage.removeItem('formSubmitted');
-            
-            // Hide success message after some time
-            setTimeout(() => {
-                formSuccess.classList.add('hidden');
-            }, 5000);
-        }
-    }
-    
-    if (formStatus === 'error') {
-        const formError = document.getElementById('formError');
-        if (formError) {
-            formError.classList.remove('hidden');
-            
-            // Hide error message after some time
-            setTimeout(() => {
-                formError.classList.add('hidden');
-            }, 5000);
-        }
+        });
     }
 });
 
@@ -2243,3 +2200,32 @@ document.addEventListener('DOMContentLoaded', function() {
         document.getElementById('currentYear').textContent = new Date().getFullYear();
     }
 });
+
+// Improved PDF opening function for GitHub Pages compatibility
+function openPdf(url) {
+    try {
+        console.log("Opening PDF:", url);
+        
+        // Extract just the filename for the title
+        const fileName = url.split('/').pop();
+        const fileTitle = fileName.replace(/\.[^/.]+$/, "").replace(/_/g, " ");
+        
+        // Encode the URL and title for use in query parameters
+        const encodedUrl = encodeURIComponent(url);
+        const encodedTitle = encodeURIComponent(fileTitle);
+        
+        // Open the PDF viewer with the PDF path and title as query parameters
+        const viewerUrl = `pdf-viewer.html?file=${encodedUrl}&title=${encodedTitle}`;
+        const newWindow = window.open(viewerUrl, '_blank');
+        
+        if (!newWindow || newWindow.closed || typeof newWindow.closed === 'undefined') {
+            // Popup was likely blocked
+            console.warn("PDF viewer popup may have been blocked");
+            alert("Your browser might have blocked the PDF viewer from opening. Please check for popup blockers and try again.");
+        }
+    } catch(e) {
+        console.error("Error opening PDF viewer:", e);
+        alert("There was an error opening the PDF viewer. Please try again or contact the site administrator.");
+    }
+    return false; // Prevent default link behavior
+}

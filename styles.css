@@ -50,6 +50,7 @@ h1, h2, h3, h4 {
 h1 {
     font-size: 3.5rem;
     margin-bottom: 20px;
+    font-weight: 300;
 }
 
 h2 {
@@ -223,9 +224,10 @@ p {
 }
 
 .about-image {
-    width: 100%;
+    width: 70%;
     height: auto;
     display: block;
+    margin: 0 auto;
 }
 
 .stats {

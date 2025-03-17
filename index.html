@@ -34,23 +34,7 @@
             alert("There was an error opening the PDF. Please try again or contact the site administrator.");
         }
         
-        // Function to ensure PDFs open in a new tab reliably
-        function openPdf(url) {
-            try {
-                console.log("Opening PDF:", url);
-                const newWindow = window.open(url, '_blank');
-                
-                if (!newWindow || newWindow.closed || typeof newWindow.closed === 'undefined') {
-                    // Popup was likely blocked
-                    console.warn("PDF popup may have been blocked");
-                    alert("Your browser might have blocked the PDF from opening. Please check for popup blockers and try again.");
-                }
-            } catch(e) {
-                console.error("Error opening PDF:", e);
-                alert("Your browser blocked the PDF from opening. Please enable popups for this site and disable any PDF viewer extensions that might interfere.");
-            }
-            return false; // Prevent default link behavior
-        }
+        // Function to ensure PDFs open in a new tab is now defined in script.js
         
         // Cleanup any existing PDF.js resources
         window.addEventListener('load', function() {
@@ -343,7 +327,7 @@
             opacity: 1;
             transform: translateY(0);
         }
-        
+
         .fade-up-1.active { transition-delay: 0.1s; }
         .fade-up-2.active { transition-delay: 0.3s; }
         .fade-up-3.active { transition-delay: 0.5s; }
@@ -620,13 +604,13 @@
                 <p class="hero-subtitle animate-on-scroll fade-up-2">Blending creativity and compassion to create fashion with purpose</p>
                 <div class="button-group animate-on-scroll fade-up-3">
                     <a href="#portfolio" class="btn">View My Work</a>
-                    <a href="./images/preview.jpg" class="btn btn-secondary" target="_blank">View Resume</a>
+                    <a href="./images/Udita_Kapoor_Resume.pdf" class="btn btn-secondary" target="_blank">View Resume</a>
                 </div>
                 <div class="social-icons animate-on-scroll fade-up-4">
                     <a href="https://www.linkedin.com/in/udita-kapoor-9785b02a6" class="social-icon linkedin" target="_blank">
                         <i class="fab fa-linkedin-in"></i>
                     </a>
-                    <a href="#" class="social-icon instagram" target="_blank">
+                    <a href="https://www.instagram.com/udita_kapoor04" class="social-icon instagram" target="_blank">
                         <i class="fab fa-instagram"></i>
                     </a>
                 </div>
@@ -863,12 +847,12 @@
             </div>
             <div class="modal-body">
                 <div class="modal-image-container">
-                    <img id="modalImage" src="" alt="Project Image">
+                    <img id="modalImage" src="./images/T9R3VI.webp" alt="DKNY & Kate Spade Mood Boards">
                 </div>
-                <p id="modalDesc" class="modal-description">Project description loading...</p>
+                <p id="modalDesc" class="modal-description">A collection of digital mood boards exploring urban minimalism and playful sophistication for iconic fashion brands. This project involved creating comprehensive mood boards focusing on upcoming seasonal trends, color palettes, and textile selections.</p>
                 <div class="modal-section">
                     <h3>Technologies</h3>
-                    <div id="modalTech" class="tech-pills"></div>
+                    <div id="modalTech" class="tech-pills"><div class="tech-pill">Adobe Photoshop</div><div class="tech-pill">Illustrator</div><div class="tech-pill">Digital Color Theory</div><div class="tech-pill">Trend Analysis</div></div>
                 </div>
             </div>
         </div>
@@ -911,7 +895,8 @@
     <!-- Initialize EmailJS -->
     <script>
         (function() {
-            emailjs.init("YOUR_PUBLIC_KEY");
+            // Removing the initialization with placeholder key as it's redundant
+            // The actual initialization is in script.js
         })();
     </script>
     
@@ -923,38 +908,6 @@
         // Portfolio item click functionality
         document.addEventListener('DOMContentLoaded', function() {
             const portfolioData = {
-                'digital-design': {
-                    title: 'DKNY & Kate Spade Mood Boards',
-                    description: 'A collection of digital mood boards exploring urban minimalism and playful sophistication for iconic fashion brands. This project involved creating comprehensive mood boards focusing on upcoming seasonal trends, color palettes, and textile selections.',
-                    category: 'Digital Design',
-                    year: '2023',
-                    image: './images/T9R3VI.webp',
-                    technologies: ['Adobe Photoshop', 'Illustrator', 'Digital Color Theory', 'Trend Analysis']
-                },
-                'visual-illustration': {
-                    title: 'Fashion Forecast Trends',
-                    description: 'Hand-drawn and digital illustrations predicting upcoming seasonal trends with a focus on innovative silhouettes and textures. Comprehensive analysis of global fashion trends and market directions.',
-                    category: 'Visual Design',
-                    year: '2023',
-                    image: './images/091b30536c345bbad3031934211a76ae.jpg',
-                    technologies: ['Traditional Sketching', 'Digital Rendering', 'Color Theory', 'Trend Forecasting']
-                },
-                'draping': {
-                    title: 'Draping',
-                    description: 'Experimental draping techniques utilized to create structured yet flowing princess line dresses. This project showcases the integration of classical techniques with contemporary design elements.',
-                    category: 'Draping',
-                    year: '2024',
-                    image: './images/OIP (5).jpg',
-                    technologies: ['Muslin Draping', 'Pattern Making', 'Garment Construction', 'Fitting Techniques']
-                },
-                'global-fashion': {
-                    title: 'Textile Research',
-                    description: 'An exploration of traditional and innovative textile techniques from various cultures, examining sustainability practices and modern applications in fashion design.',
-                    category: 'Previous Projects',
-                    year: '2022',
-                    image: './images/AdobeStock_150583573_Editorial_Use_Only-683x1024.jpeg',
-                    technologies: ['Sustainable Materials', 'Traditional Techniques', 'Cultural Research', 'Textile Innovation']
-                }
             };
 
             // Get modal elements
@@ -1007,6 +960,10 @@
             if (modalClose) {
                 modalClose.addEventListener('click', () => {
                     modal.classList.remove('open');
+                    // Ensure we scroll to portfolio section when modal is closed
+                    setTimeout(() => {
+                        document.getElementById('portfolio').scrollIntoView({ behavior: 'smooth' });
+                    }, 100);
                 });
             }
 
@@ -1015,6 +972,10 @@
                 window.addEventListener('click', (e) => {
                     if (e.target === modal) {
                         modal.classList.remove('open');
+                        // Ensure we scroll to portfolio section when modal is closed
+                        setTimeout(() => {
+                            document.getElementById('portfolio').scrollIntoView({ behavior: 'smooth' });
+                        }, 100);
                     }
                 });
             }
