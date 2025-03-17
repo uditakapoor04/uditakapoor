@@ -344,6 +344,164 @@
             transform: translateY(-5px);
             box-shadow: 0 5px 15px rgba(0,0,0,0.2);
         }
+        
+        /* Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0, 0, 0, 0.85);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        
+        .modal.open {
+            display: block;
+            opacity: 1;
+        }
+        
+        .modal-content {
+            background-color: #1a1a1a;
+            margin: 5% auto;
+            border-radius: 8px;
+            max-width: 800px;
+            width: 90%;
+            box-shadow: 0 5px 30px rgba(0, 0, 0, 0.5);
+            animation: modalFadeIn 0.5s;
+            overflow: hidden;
+        }
+        
+        @keyframes modalFadeIn {
+            from {opacity: 0; transform: translateY(30px);}
+            to {opacity: 1; transform: translateY(0);}
+        }
+        
+        .modal-close {
+            position: absolute;
+            right: 20px;
+            top: 20px;
+            color: white;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+            z-index: 10;
+            width: 32px;
+            height: 32px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: rgba(0, 0, 0, 0.3);
+            border-radius: 50%;
+        }
+        
+        .modal-close:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+        
+        .modal-header {
+            padding: 30px;
+            background-color: #0a0a0a;
+            color: #fff;
+            border-bottom: 1px solid #333;
+        }
+        
+        .modal-header h2 {
+            margin-top: 0;
+            margin-bottom: 15px;
+            font-size: 24px;
+        }
+        
+        .modal-meta {
+            display: flex;
+            gap: 15px;
+        }
+        
+        .modal-category, .modal-year {
+            background-color: rgba(255, 255, 255, 0.1);
+            padding: 5px 12px;
+            border-radius: 30px;
+            font-size: 14px;
+        }
+        
+        .modal-body {
+            padding: 30px;
+        }
+        
+        .modal-image-container {
+            width: 100%;
+            height: 300px;
+            overflow: hidden;
+            margin-bottom: 25px;
+            border-radius: 8px;
+            background-color: #111;
+        }
+        
+        .modal-image-container img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .modal-description {
+            margin-bottom: 25px;
+            line-height: 1.6;
+            color: #ccc;
+        }
+        
+        .modal-section {
+            margin-top: 25px;
+        }
+        
+        .modal-section h3 {
+            margin-bottom: 15px;
+            font-size: 18px;
+            position: relative;
+            padding-bottom: 8px;
+        }
+        
+        .modal-section h3::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            bottom: 0;
+            width: 50px;
+            height: 2px;
+            background: var(--accent-color, #ca9d75);
+        }
+        
+        .tech-pills {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        
+        .tech-pill {
+            background-color: rgba(255, 255, 255, 0.08);
+            padding: 6px 15px;
+            border-radius: 20px;
+            font-size: 13px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        @media (max-width: 768px) {
+            .modal-content {
+                width: 95%;
+                margin: 10% auto;
+            }
+            
+            .modal-header, .modal-body {
+                padding: 20px;
+            }
+            
+            .modal-image-container {
+                height: 200px;
+            }
+        }
     </style>
 </head>
 <body>
@@ -629,6 +787,30 @@
         </div>
     </footer>
 
+    <!-- Portfolio Modal HTML Structure -->
+    <div id="portfolioModal" class="modal">
+        <div class="modal-content">
+            <span id="modalClose" class="modal-close">&times;</span>
+            <div class="modal-header">
+                <h2 id="modalTitle">Project Title</h2>
+                <div class="modal-meta">
+                    <div id="modalCategory" class="modal-category">Category</div>
+                    <div id="modalYear" class="modal-year">Year</div>
+                </div>
+            </div>
+            <div class="modal-body">
+                <div class="modal-image-container">
+                    <img id="modalImage" src="" alt="Project Image">
+                </div>
+                <p id="modalDesc" class="modal-description">Project description loading...</p>
+                <div class="modal-section">
+                    <h3>Technologies</h3>
+                    <div id="modalTech" class="tech-pills"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- Scripts -->
     <script>
         // Mobile menu functionality
@@ -729,25 +911,31 @@
                     const project = portfolioData[projectId];
 
                     if (project) {
-                        // Update modal content
-                        modalImage.src = project.image;
-                        modalImage.alt = project.title;
-                        modalTitle.textContent = project.title;
-                        modalDesc.textContent = project.description;
-                        modalCategory.textContent = project.category;
-                        modalYear.textContent = project.year;
+                        // Check if modal elements exist before updating
+                        if (modalImage && modalTitle && modalDesc && modalCategory && 
+                            modalYear && modalTech && modal) {
+                            // Update modal content
+                            modalImage.src = project.image;
+                            modalImage.alt = project.title;
+                            modalTitle.textContent = project.title;
+                            modalDesc.textContent = project.description;
+                            modalCategory.textContent = project.category;
+                            modalYear.textContent = project.year;
 
-                        // Update technologies
-                        modalTech.innerHTML = '';
-                        project.technologies.forEach(tech => {
-                            const pill = document.createElement('div');
-                            pill.className = 'tech-pill';
-                            pill.textContent = tech;
-                            modalTech.appendChild(pill);
-                        });
+                            // Update technologies
+                            modalTech.innerHTML = '';
+                            project.technologies.forEach(tech => {
+                                const pill = document.createElement('div');
+                                pill.className = 'tech-pill';
+                                pill.textContent = tech;
+                                modalTech.appendChild(pill);
+                            });
 
-                        // Show modal
-                        modal.classList.add('open');
+                            // Show modal
+                            modal.classList.add('open');
+                        } else {
+                            console.warn('Modal elements not found. The portfolio modal HTML might be missing.');
+                        }
                     }
                 });
             });
