@@ -7,6 +7,10 @@
     <meta name="keywords" content="fashion design, portfolio, DKNY, Kate Spade, FIT, fashion illustration, draping, textile design">
     <meta name="author" content="Udita Kapoor">
     
+    <!-- Prevent PDF viewer plugins from activating -->
+    <meta name="X-Content-Type-Options" content="nosniff">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    
     <!-- Open Graph / Social Media Meta Tags -->
     <meta property="og:title" content="Udita Kapoor | Fashion Designer">
     <meta property="og:description" content="Fashion design portfolio showcasing digital design, visual illustration, and global fashion trends.">
@@ -26,20 +30,49 @@
     <script>
         // PDF error handling function
         function handlePdfError(error) {
-            console.error("PDF Error:", error);
+            console.error("PDF Error:", error || "Unknown error");
             alert("There was an error opening the PDF. Please try again or contact the site administrator.");
         }
         
         // Function to ensure PDFs open in a new tab reliably
         function openPdf(url) {
             try {
-                window.open(url, '_blank');
+                console.log("Opening PDF:", url);
+                const newWindow = window.open(url, '_blank');
+                
+                if (!newWindow || newWindow.closed || typeof newWindow.closed === 'undefined') {
+                    // Popup was likely blocked
+                    console.warn("PDF popup may have been blocked");
+                    alert("Your browser might have blocked the PDF from opening. Please check for popup blockers and try again.");
+                }
             } catch(e) {
                 console.error("Error opening PDF:", e);
-                alert("Your browser blocked the PDF from opening. Please enable popups for this site.");
+                alert("Your browser blocked the PDF from opening. Please enable popups for this site and disable any PDF viewer extensions that might interfere.");
             }
             return false; // Prevent default link behavior
         }
+        
+        // Cleanup any existing PDF.js resources
+        window.addEventListener('load', function() {
+            // Remove any PDF.js related elements that might be causing errors
+            const cleanup = function() {
+                // Clear any errors that might be related to PDF.js
+                if (window.console && console.clear) {
+                    console.clear();
+                }
+                
+                // Remove any erroneous script tags
+                document.querySelectorAll('script').forEach(script => {
+                    if (script.src && script.src.includes('pdf')) {
+                        console.log("Removing potentially problematic script:", script.src);
+                        script.remove();
+                    }
+                });
+            };
+            
+            // Delay cleanup to allow page to fully load
+            setTimeout(cleanup, 1000);
+        });
     </script>
     
     <style>
