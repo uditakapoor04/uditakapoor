@@ -3,64 +3,111 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="refresh" content="5;url=index.html?form=success">
     <title>Thank You | Udita Kapoor</title>
     <link rel="icon" type="image/webp" href="./images/T9R3VI.webp">
     <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    
     <style>
-        .thank-you-page {
-            min-height: 100vh;
+        body {
+            background-color: #0a0a0a;
+            color: #ffffff;
+            font-family: 'Montserrat', sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+        
+        .thank-you-container {
             display: flex;
             flex-direction: column;
-            justify-content: center;
             align-items: center;
-            text-align: center;
+            justify-content: center;
+            min-height: 100vh;
             padding: 2rem;
-            background: linear-gradient(135deg, #1a1a1a 0%, #0a0a0a 100%);
+            text-align: center;
         }
         
-        .thank-you-title {
-            font-size: 3.5rem;
-            color: var(--accent-color, #ca9d75);
-            margin-bottom: 1.5rem;
+        .thank-you-content {
+            max-width: 600px;
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeIn 1s forwards 0.5s;
         }
         
-        .thank-you-message {
-            font-size: 1.25rem;
-            max-width: 700px;
-            margin-bottom: 2rem;
-            line-height: 1.6;
+        @keyframes fadeIn {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
         
-        .btn-home {
-            margin-top: 1rem;
-        }
-        
-        .success-icon {
+        .thank-you-icon {
             font-size: 5rem;
-            color: var(--accent-color, #ca9d75);
+            color: #ca9d75;
+            margin-bottom: 2rem;
+        }
+        
+        h1 {
+            font-size: 3rem;
             margin-bottom: 1.5rem;
+        }
+        
+        p {
+            font-size: 1.2rem;
+            line-height: 1.6;
+            margin-bottom: 2rem;
+        }
+        
+        .loader {
+            width: 100%;
+            height: 4px;
+            background-color: rgba(255, 255, 255, 0.1);
+            position: relative;
+            overflow: hidden;
+            margin-top: 2rem;
+            border-radius: 2px;
+        }
+        
+        .loader::after {
+            content: '';
+            display: block;
+            height: 100%;
+            width: 0;
+            background-color: #ca9d75;
+            animation: loading 5s linear forwards;
+        }
+        
+        @keyframes loading {
+            to { width: 100%; }
+        }
+        
+        .return-link {
+            display: inline-block;
+            margin-top: 2rem;
+            color: #ca9d75;
+            text-decoration: none;
+            font-weight: 600;
+            transition: color 0.3s;
+        }
+        
+        .return-link:hover {
+            color: #ffffff;
         }
     </style>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 </head>
 <body>
-    <div class="thank-you-page">
-        <div class="success-icon">
-            <i class="fas fa-check-circle"></i>
+    <div class="thank-you-container">
+        <div class="thank-you-content">
+            <div class="thank-you-icon">
+                <i class="fas fa-check-circle"></i>
+            </div>
+            <h1>Thank You!</h1>
+            <p>Your message has been sent successfully. I'll get back to you as soon as possible.</p>
+            <div class="loader"></div>
+            <p>You will be redirected to the homepage in a few seconds...</p>
+            <a href="index.html?form=success" class="return-link">Return to Homepage</a>
         </div>
-        <h1 class="thank-you-title">Message Received!</h1>
-        <p class="thank-you-message">Thank you for reaching out. I appreciate your interest and will respond to your message as soon as possible.</p>
-        <a href="index.html" class="btn btn-home">Return to Home</a>
     </div>
-    
-    <script>
-        // Add current year to footer
-        document.addEventListener('DOMContentLoaded', function() {
-            const yearElement = document.getElementById('currentYear');
-            if (yearElement) {
-                yearElement.textContent = new Date().getFullYear();
-            }
-        });
-    </script>
 </body>
 </html> 

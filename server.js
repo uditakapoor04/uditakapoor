@@ -17,7 +17,7 @@ try {
         service: 'gmail',
         auth: {
             user: 'udita.kapoor04@gmail.com', // The Gmail account that will SEND the emails
-            pass: 'your-app-password'         // IMPORTANT: Replace with your actual Gmail app password!
+            pass: process.env.EMAIL_PASSWORD || 'your-app-password' // Use environment variable for security
         }
     });
     
@@ -48,11 +48,17 @@ try {
     console.error('Failed to configure email transport:', error);
 }
 
+// Serve static files
 app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, 'index.html'));
 });
 
-// Handle form submissions
+app.get('/thank-you', (req, res) => {
+    res.sendFile(path.join(__dirname, 'thank-you.html'));
+});
+
+// Handle form submissions - note that this is a backup to FormSubmit.co
+// The form in index.html is configured to use FormSubmit.co directly
 app.post('/submit-form', async (req, res) => {
     try {
         console.log('Form submission received:', req.body);
@@ -71,7 +77,7 @@ app.post('/submit-form', async (req, res) => {
         // If email service isn't configured, just log the message
         if (!transporter) {
             console.log('No email transport available. Would have sent:');
-            console.log(`To: udita_kapoor@fitnyc.edu`);
+            console.log(`To: udita.kapoor04@gmail.com`);
             console.log(`Subject: New Contact Form: ${subject}`);
             console.log(`From: ${name} (${email})`);
             console.log(`Message: ${message}`);
@@ -109,7 +115,12 @@ app.post('/submit-form', async (req, res) => {
             console.log('Email preview URL:', nodemailer.getTestMessageUrl(info));
         }
         
-        res.json({ success: true, message: 'Message sent successfully' });
+        // Redirect to thank you page or return JSON based on request type
+        if (req.headers['content-type'] === 'application/json') {
+            res.json({ success: true, message: 'Message sent successfully' });
+        } else {
+            res.redirect('/thank-you');
+        }
     } catch (error) {
         console.error('Error sending email:', error);
         
@@ -117,10 +128,15 @@ app.post('/submit-form', async (req, res) => {
         const formData = req.body;
         console.log('Failed form submission data:', formData);
         
-        res.status(500).json({ 
-            success: false, 
-            message: 'Failed to send message. Please try again later.'
-        });
+        // Return error response based on request type
+        if (req.headers['content-type'] === 'application/json') {
+            res.status(500).json({ 
+                success: false, 
+                message: 'Failed to send message. Please try again later.'
+            });
+        } else {
+            res.redirect('/index.html?form=error');
+        }
     }
 });
 

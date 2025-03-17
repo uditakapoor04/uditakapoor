@@ -2126,57 +2126,104 @@ document.addEventListener('DOMContentLoaded', function() {
     // Handle form submission without reCAPTCHA
     const contactForm = document.getElementById('contactForm');
     if (contactForm) {
-        contactForm.addEventListener('submit', function(event) {
-            event.preventDefault();
-            
-            // Hide any previous messages
-            const formSuccess = document.getElementById('formSuccess');
-            const formError = document.getElementById('formError');
-            
-            if (formSuccess) formSuccess.classList.add('hidden');
-            if (formError) formError.classList.add('hidden');
-            
-            // Collect form data
-            const formData = {
-                name: document.getElementById('name').value,
-                email: document.getElementById('email').value,
-                subject: document.getElementById('subject').value,
-                message: document.getElementById('message').value
-            };
-            
-            console.log('Sending form data:', formData);
-            
-            // Send data to server
-            fetch('/submit-form', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(formData)
-            })
-            .then(response => response.json())
-            .then(data => {
-                console.log('Server response:', data);
-                if (data.success) {
-                    // Show success message
-                    if (formSuccess) formSuccess.classList.remove('hidden');
+        // Check if the form should use AJAX or direct submission
+        const useAjax = false; // Set to true if you want to use your Express server instead of FormSubmit
+        
+        if (useAjax) {
+            contactForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                const formData = new FormData(contactForm);
+                const formDataObj = {};
+                formData.forEach((value, key) => {
+                    formDataObj[key] = value;
+                });
+                
+                // Show loading state
+                const submitButton = contactForm.querySelector('button[type="submit"]');
+                const originalButtonText = submitButton.textContent;
+                submitButton.textContent = 'Sending...';
+                submitButton.disabled = true;
+                
+                // Send data to server
+                fetch('/submit-form', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(formDataObj)
+                })
+                .then(response => response.json())
+                .then(data => {
+                    // Reset form
                     contactForm.reset();
-                } else {
+                    
+                    // Show success message
+                    document.getElementById('formSuccess').classList.remove('hidden');
+                    
+                    // Reset button
+                    submitButton.textContent = originalButtonText;
+                    submitButton.disabled = false;
+                    
+                    // Hide success message after some time
+                    setTimeout(() => {
+                        document.getElementById('formSuccess').classList.add('hidden');
+                    }, 5000);
+                })
+                .catch(error => {
+                    console.error('Error submitting form:', error);
+                    
                     // Show error message
-                    if (formError) {
-                        formError.textContent = data.message || 'Failed to send message. Please try again later.';
-                        formError.classList.remove('hidden');
-                    }
-                }
-            })
-            .catch(error => {
-                console.error('Error sending form:', error);
-                if (formError) {
-                    formError.textContent = 'An error occurred. Please try again later.';
-                    formError.classList.remove('hidden');
-                }
+                    document.getElementById('formError').classList.remove('hidden');
+                    
+                    // Reset button
+                    submitButton.textContent = originalButtonText;
+                    submitButton.disabled = false;
+                    
+                    // Hide error message after some time
+                    setTimeout(() => {
+                        document.getElementById('formError').classList.add('hidden');
+                    }, 5000);
+                });
             });
-        });
+        } else {
+            // Using FormSubmit.co (default)
+            // The default HTML form will handle submission
+            // Simply add a tracking mechanism for the success message
+            contactForm.addEventListener('submit', function() {
+                localStorage.setItem('formSubmitted', 'true');
+                // FormSubmit.co will handle the actual submission and redirect
+            });
+        }
+    }
+
+    // Check for form submission status (after redirect)
+    const urlParams = new URLSearchParams(window.location.search);
+    const formStatus = urlParams.get('form');
+    
+    if (formStatus === 'success' || localStorage.getItem('formSubmitted') === 'true') {
+        const formSuccess = document.getElementById('formSuccess');
+        if (formSuccess) {
+            formSuccess.classList.remove('hidden');
+            localStorage.removeItem('formSubmitted');
+            
+            // Hide success message after some time
+            setTimeout(() => {
+                formSuccess.classList.add('hidden');
+            }, 5000);
+        }
+    }
+    
+    if (formStatus === 'error') {
+        const formError = document.getElementById('formError');
+        if (formError) {
+            formError.classList.remove('hidden');
+            
+            // Hide error message after some time
+            setTimeout(() => {
+                formError.classList.add('hidden');
+            }, 5000);
+        }
     }
 });
 

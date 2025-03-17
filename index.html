@@ -772,6 +772,10 @@
                         <input type="hidden" name="_subject" value="New Portfolio Contact Form Submission">
                         <input type="hidden" name="_captcha" value="false">
                         <input type="hidden" name="_next" value="https://uditakapoor.com/thank-you">
+                        <!-- Add honeypot to prevent spam -->
+                        <input type="text" name="_honey" style="display:none">
+                        <!-- Disable captcha -->
+                        <input type="hidden" name="_captcha" value="false">
                         
                         <div class="form-group">
                             <label for="name">Name</label>
@@ -802,6 +806,32 @@
                             Failed to send message. Please try again later.
                         </div>
                     </form>
+                    
+                    <script>
+                        // Add form submission handler for user feedback
+                        document.getElementById('contactForm').addEventListener('submit', function(e) {
+                            // FormSubmit will handle the actual submission, this is just for user feedback
+                            localStorage.setItem('formSubmitted', 'true');
+                            
+                            // The form will redirect to the thank-you page as specified in _next
+                            // No need to prevent default behavior
+                        });
+                        
+                        // Check if coming back from form submission (from thank-you page)
+                        document.addEventListener('DOMContentLoaded', function() {
+                            const urlParams = new URLSearchParams(window.location.search);
+                            const formStatus = urlParams.get('form');
+                            
+                            if (formStatus === 'success' || localStorage.getItem('formSubmitted') === 'true') {
+                                document.getElementById('formSuccess').classList.remove('hidden');
+                                localStorage.removeItem('formSubmitted');
+                            }
+                            
+                            if (formStatus === 'error') {
+                                document.getElementById('formError').classList.remove('hidden');
+                            }
+                        });
+                    </script>
                 </div>
             </div>
         </div>
