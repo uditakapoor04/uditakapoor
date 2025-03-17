@@ -56,22 +56,22 @@ document.addEventListener('DOMContentLoaded', function() {
             showPdfsOnly: true,
             pdfs: [
                 {
-                    path: "./pdf/Madeleine Vionnet Udita Kapoor .pdf",
+                    path: "./images/visual.pdf/Madeleine Vionnet Udita Kapoor .pdf",
                     title: "Madeleine Vionnet Study",
                     description: "An in-depth analysis of Madeleine Vionnet's pioneering approach to bias cut and draping techniques."
                 },
                 {
-                           path: "./pdf/Kapoor- Diesel collection.pdf",
+                    path: "./images/visual.pdf/Kapoor- Diesel collection.pdf",
                     title: "Diesel Collection",
                     description: "A contemporary design collection inspired by Diesel's urban aesthetic and innovative fabric treatments."
                 },
                 {
-                    path: "./pdf/FINAL PROJECT.pdf",
+                    path: "./images/visual.pdf/FINAL PROJECT.pdf",
                     title: "Final Project",
                     description: "Comprehensive fashion design project showcasing integrated design concepts and execution."
                 },
                 {
-                    path: "./pdf/FF211-Bespoke Royalty Udaipur.pdf",
+                    path: "./images/visual.pdf/FF211-Bespoke Royalty Udaipur.pdf",
                     title: "Bespoke Royalty Udaipur",
                     description: "Luxury design project inspired by the royal heritage and craftsmanship of Udaipur."
                 }
