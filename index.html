@@ -1,0 +1,800 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Udita Kapoor - Fashion Designer Portfolio. Specializing in digital design, visual illustration, and global fashion trends.">
+    <meta name="keywords" content="fashion design, portfolio, DKNY, Kate Spade, FIT, fashion illustration, draping, textile design">
+    <meta name="author" content="Udita Kapoor">
+    
+    <!-- Open Graph / Social Media Meta Tags -->
+    <meta property="og:title" content="Udita Kapoor | Fashion Designer">
+    <meta property="og:description" content="Fashion design portfolio showcasing digital design, visual illustration, and global fashion trends.">
+    <meta property="og:image" content="/images/og-image.jpg">
+    <meta property="og:url" content="https://uditakapoor.com">
+    
+    <title>Udita Kapoor | Fashion Designer</title>
+    
+    <!-- Simplified favicon -->
+    <link rel="icon" type="image/webp" href="./images/T9R3VI.webp">
+    
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <style>
+        /* Initial state to prevent FOUC (Flash of Unstyled Content) */
+        body {
+            opacity: 0;
+            transition: opacity 0.8s ease;
+            visibility: hidden; /* Hide content until loaded */
+        }
+        
+        body.loaded {
+            opacity: 1;
+            visibility: visible;
+        }
+        
+        /* Mobile Menu Styles */
+        .mobile-menu-toggle {
+            display: none;
+            background: none;
+            border: none;
+            color: #fff;
+            font-size: 24px;
+            cursor: pointer;
+            padding: 10px;
+        }
+        
+        @media (max-width: 768px) {
+            .mobile-menu-toggle {
+                display: block;
+            }
+            
+            .nav-links {
+                position: fixed;
+                top: 80px;
+                left: 0;
+                width: 100%;
+                background-color: rgba(10, 10, 10, 0.95);
+                padding: 20px;
+                flex-direction: column;
+                align-items: center;
+                transform: translateY(-100%);
+                transition: transform 0.3s ease;
+            }
+            
+            .nav-links.active {
+                transform: translateY(0);
+                display: flex;
+            }
+            
+            .nav-link {
+                padding: 15px 0;
+            }
+        }
+        
+        /* Updated Portfolio Grid Styles */
+        .portfolio-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 24px;
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .portfolio-item {
+            position: relative;
+            overflow: hidden;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            background-color: #1a1a1a;
+            aspect-ratio: 4/3;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+        }
+
+        .portfolio-item:hover {
+            transform: translateY(-5px);
+        }
+
+        .image-container {
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+        }
+
+        .portfolio-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+
+        .portfolio-item:hover .portfolio-image {
+            transform: scale(1.05);
+        }
+
+        .portfolio-overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            padding: 20px;
+            background: linear-gradient(
+                to top,
+                rgba(0,0,0,0.9) 0%,
+                rgba(0,0,0,0.7) 50%,
+                transparent 100%
+            );
+            transform: translateY(0);
+            transition: transform 0.3s ease;
+        }
+
+        .portfolio-category {
+            display: inline-block;
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 8px;
+            color: #cccccc;
+            background-color: rgba(0, 0, 0, 0.5);
+            padding: 4px 8px;
+            border-radius: 4px;
+        }
+
+        .portfolio-title {
+            font-size: 1.25rem;
+            margin-bottom: 5px;
+            color: #ffffff;
+            text-shadow: 0 1px 2px rgba(0,0,0,0.5);
+        }
+
+        .portfolio-year {
+            font-size: 14px;
+            color: #cccccc;
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .portfolio-grid {
+                grid-template-columns: 1fr;
+                gap: 20px;
+                padding: 0 15px;
+            }
+
+            .portfolio-item {
+                aspect-ratio: 3/2;
+            }
+
+            .portfolio-overlay {
+                padding: 15px;
+            }
+        }
+
+        .image-error-text {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+            color: #fff;
+            z-index: 1;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        img.error + .image-error-text {
+            opacity: 1;
+        }
+
+        .button-group {
+            display: flex;
+            gap: 15px;
+            margin-top: 30px;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 15px 30px;
+            background-color: var(--accent-color, #ca9d75);
+            color: #fff;
+            border: none;
+            border-radius: 30px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-size: 0.9rem;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+        }
+        
+        .btn-secondary {
+            background-color: transparent;
+            border: 2px solid #ffffff;
+            color: #fff;
+        }
+        
+        .btn-secondary:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+            transform: translateY(-3px);
+        }
+
+        /* For mobile responsiveness */
+        @media (max-width: 768px) {
+            .button-group {
+                flex-direction: column;
+                width: 100%;
+                max-width: 250px;
+            }
+        }
+
+        /* Hero Section Enhancement */
+        .hero {
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: radial-gradient(circle at 10% 20%, rgba(255, 255, 255, 0.03) 0%, transparent 20%),
+                             radial-gradient(circle at 80% 60%, rgba(255, 255, 255, 0.03) 0%, transparent 20%);
+            z-index: -1;
+        }
+        
+        .hero-content {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 120px 20px;
+            text-align: center;
+        }
+        
+        .hero h1 {
+            font-size: 4rem;
+            margin-bottom: 1.5rem;
+            letter-spacing: -0.02em;
+            line-height: 1.1;
+        }
+        
+        .hero-subtitle {
+            font-size: 1.5rem;
+            margin-bottom: 2rem;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            line-height: 1.5;
+        }
+        
+        /* Animation Enhancements */
+        .animate-on-scroll {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.8s ease, transform 0.8s ease;
+        }
+        
+        .animate-on-scroll.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        .fade-up-1.active { transition-delay: 0.1s; }
+        .fade-up-2.active { transition-delay: 0.3s; }
+        .fade-up-3.active { transition-delay: 0.5s; }
+        .fade-up-4.active { transition-delay: 0.7s; }
+
+        /* Enhanced social icons */
+        .social-icons {
+            margin-top: 40px;
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+        }
+        
+        .social-icon {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            background-color: rgba(255, 255, 255, 0.1);
+            color: #fff;
+            font-size: 1.2rem;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        .social-icon:hover {
+            background-color: var(--accent-color, #ca9d75);
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+    </style>
+</head>
+<body>
+    <!-- Loading Screen -->
+    <div class="loading-screen">
+        <div class="loading-content">
+            <div class="loading-logo">UDITA KAPOOR</div>
+            <p>Fashion Designer</p>
+            <div class="loading-runway">
+                <div class="runway-line"></div>
+                <div class="runway-model"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Runway-Inspired Loading
+        window.addEventListener('load', () => {
+            const curtains = document.createElement('div');
+            curtains.style = `
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100vh;
+                background: #000;
+                z-index: 2000;
+                display: flex;
+                justify-content: space-between;
+            `;
+            
+            curtains.innerHTML = `
+                <div class="curtain" style="width:50%;background:#111;transition:1s"></div>
+                <div class="curtain" style="width:50%;background:#111;transition:1s"></div>
+            `;
+            
+            document.body.appendChild(curtains);
+            
+            setTimeout(() => {
+                curtains.querySelectorAll('.curtain').forEach(c => c.style.width = '0%');
+                setTimeout(() => {
+                    curtains.remove();
+                }, 1000);
+            }, 500);
+            
+            // Loading Screen - changed from 1500 to 2000 (2 seconds)
+            setTimeout(() => {
+                document.querySelector('.loading-screen').style.opacity = '0';
+                setTimeout(() => {
+                    document.querySelector('.loading-screen').style.display = 'none';
+                    document.body.className = 'loaded';
+                    document.body.style.opacity = '1';
+                    document.body.style.visibility = 'visible';
+                }, 500);
+            }, 2000);
+        });
+    </script>
+    
+    <!-- Header - Updated for visual interest -->
+    <header class="elegant-header">
+        <div class="container">
+            <nav>
+                <div class="logo">
+                    <span class="logo-text">UDITA</span>
+                    <span class="logo-text">KAPOOR</span>
+                </div>
+                <button class="mobile-menu-toggle" aria-label="Toggle navigation menu">☰</button>
+                <div class="nav-links">
+                    <a href="#hero" class="nav-link">Home</a>
+                    <a href="#about" class="nav-link">About</a>
+                    <a href="#portfolio" class="nav-link">Portfolio</a>
+                    <a href="#contact" class="nav-link">Contact</a>
+                </div>
+            </nav>
+        </div>
+    </header>
+    
+    <!-- Hero Section with animation classes -->
+    <section id="hero" class="hero">
+        <div class="container">
+            <div class="hero-content">
+                <h1 class="animate-on-scroll fade-up-1">Udita <span class="accent">Kapoor</span></h1>
+                <p class="hero-subtitle animate-on-scroll fade-up-2">Blending creativity and compassion to create fashion with purpose</p>
+                <div class="button-group animate-on-scroll fade-up-3">
+                    <a href="#portfolio" class="btn">View My Work</a>
+                    <a href="./images/preview.jpg" class="btn btn-secondary" target="_blank">View Resume</a>
+                </div>
+                <div class="social-icons animate-on-scroll fade-up-4">
+                    <a href="https://www.linkedin.com/in/udita-kapoor-9785b02a6" class="social-icon linkedin" target="_blank">
+                        <i class="fab fa-linkedin-in"></i>
+                    </a>
+                    <a href="#" class="social-icon instagram" target="_blank">
+                        <i class="fab fa-instagram"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- About Section -->
+    <section id="about" class="about">
+        <div class="container">
+            <h2>Education & Skills</h2>
+            
+            <div class="about-content">
+                <div>
+                    <img src="./images/WhatsApp Image 2025-03-15 at 19.46.55_da43c96e.jpg" alt="Udita Kapoor" class="about-image">
+                </div>
+                <div class="about-text">
+                    <h3>Summary</h3>
+                    <p>I am a motivated and independent Fashion Design Student currently pursuing an Associate in Applied Science in Fashion Design at the Fashion Institute of Technology in New York. As a self-driven fashion design student, I am eager to apply my skills and knowledge to real-world challenges through an internship role.</p>
+                    <p>My design philosophy centers around creating mood boards with thorough research and brand collaboration. I've worked on projects involving brands like DKNY and Kate Spade to show calm and effervescence in the form of soft aesthetic into the big noisy city life.</p>
+                    <p>I'm passionate about visual illustration, researching fashion forecast trends, and experimenting with draping techniques. My educational background includes studies at Podar International School in Mumbai, where I focused on Psychology, Business, Art and Design, English, French, and Economics.</p>
+                    
+                    <div class="stats">
+                        <div>
+                            <div class="stat-number">2+</div>
+                            <div class="stat-label">Years of Study</div>
+                        </div>
+                        <div>
+                            <div class="stat-number">NYC</div>
+                            <div class="stat-label">Based In</div>
+                        </div>
+                        <div>
+                            <div class="stat-number">FIT</div>
+                            <div class="stat-label">Current School</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Portfolio Section -->
+    <section id="portfolio" class="portfolio">
+        <div class="container">
+            <h2>Portfolio</h2>
+            
+            <div class="filter-container">
+                <button class="filter-button active" data-filter="all">All Projects</button>
+                <button class="filter-button" data-filter="ready-to-wear">Digital Design</button>
+                <button class="filter-button" data-filter="couture">Visual Design</button>
+                <button class="filter-button" data-filter="accessories">Draping</button>
+                <button class="filter-button" data-filter="sustainable">Previous Projects</button>
+            </div>
+            
+            <div class="portfolio-grid">
+                <!-- Digital Design Item -->
+                <div class="portfolio-item" data-id="digital-design" data-category="ready-to-wear">
+                    <div class="image-container">
+                        <img class="portfolio-image" 
+                            src="./images/Screenshot 2025-03-13 220825.png" 
+                            alt="Digital Design"
+                            onerror="this.onerror=null; this.src='https://via.placeholder.com/600x450?text=Fashion+Design';">
+                        <div class="image-error-text">Digital Design</div>
+                    </div>
+                    <div class="portfolio-overlay">
+                        <h3 class="portfolio-title">Digital Design</h3>
+                    </div>
+                </div>
+
+                <!-- Visual Illustration Item -->
+                <div class="portfolio-item" data-id="visual-illustration" data-category="couture">
+                    <div class="image-container">
+                        <img class="portfolio-image" 
+                            src="./images/Screenshot 2025-03-13 211955.png" 
+                            alt="Visual Design"
+                            onerror="this.onerror=null; this.src='https://via.placeholder.com/600x450?text=Visual+Design';">
+                        <div class="image-error-text">Visual Design</div>
+                    </div>
+                    <div class="portfolio-overlay">
+                        <h3 class="portfolio-title">Visual Design</h3>
+                    </div>
+                </div>
+
+                <!-- Draping Item -->
+                <div class="portfolio-item" data-id="draping" data-category="accessories">
+                    <div class="image-container">
+                        <img class="portfolio-image" 
+                            src="./images/Screenshot 2025-03-16 142422.png" 
+                            alt="Draping Techniques"
+                            onerror="this.onerror=null; this.src='https://via.placeholder.com/600x450?text=Draping';">
+                        <div class="image-error-text">Draping</div>
+                    </div>
+                    <div class="portfolio-overlay">
+                        
+                        <h3 class="portfolio-title">Draping</h3>
+                    </div>
+                </div>
+
+                <!-- Global Fashion Item -->
+                <div class="portfolio-item" data-id="global-fashion" data-category="sustainable">
+                    <div class="image-container">
+                        <img class="portfolio-image" 
+                            src="images/Screenshot 2025-03-13 223958.png" 
+                            alt="Previous Projects"
+                            onerror="this.onerror=null; this.src='https://via.placeholder.com/600x450?text=Previous+Projects';">
+                        <div class="image-error-text">Previous Projects</div>
+                    </div>
+                    <div class="portfolio-overlay">
+                        <h3 class="portfolio-title">Previous Projects</h3>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Contact Section -->
+    <section id="contact" class="contact">
+        <div class="container">
+            <h2>Get in Touch</h2>
+            
+            <div class="contact-content">
+                <div class="contact-info">
+                    <h3>Let's Connect</h3>
+                    <p>As a fashion design student at FIT in New York, I'm actively seeking internship opportunities to apply my skills in a professional setting. I'm an effective communicator, problem solver, and team player with skills in Adobe Photoshop and analytical thinking.</p>
+                    <p>I'm passionate about digital design, visual illustration, and exploring global fashion trends. I've also volunteered as Head of School Photography club and participated in community service as a member of Leo club and FIT ICS (Indian Cultural Society) events.</p>
+                    
+                    <div class="contact-details">
+                        <div class="contact-item">
+                            <div class="contact-icon">📍</div>
+                            <div>New York, New York</div>
+                        </div>
+                        <div class="contact-item">
+                            <div class="contact-icon">📧</div>
+                            <div>
+                                <a href="mailto:udita.kapoor04@gmail.com" class="email-link">udita.kapoor04@gmail.com</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="contact-form">
+                    <form id="contactForm" action="https://formsubmit.co/udita.kapoor04@gmail.com" method="POST">
+                        <input type="hidden" name="_subject" value="New Portfolio Contact Form Submission">
+                        <input type="hidden" name="_captcha" value="false">
+                        <input type="hidden" name="_next" value="https://uditakapoor.com/thank-you">
+                        
+                        <div class="form-group">
+                            <label for="name">Name</label>
+                            <input type="text" id="name" name="name" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="email">Email</label>
+                            <input type="email" id="email" name="email" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="subject">Subject</label>
+                            <input type="text" id="subject" name="subject" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="message">Message</label>
+                            <textarea id="message" name="message" required></textarea>
+                        </div>
+                        
+                        <button type="submit" class="btn">Send Message</button>
+                        
+                        <div id="formSuccess" class="form-success hidden">
+                            Your message has been sent successfully!
+                        </div>
+                        <div id="formError" class="form-error hidden">
+                            Failed to send message. Please try again later.
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-logo">UDITA KAPOOR</div>
+            
+           
+            
+            <div class="copyright">
+                © <span id="currentYear"></span> Udita Kapoor. All rights reserved.
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script>
+        // Mobile menu functionality
+        const mobileMenuToggle = document.querySelector('.mobile-menu-toggle');
+        const navLinks = document.querySelector('.nav-links');
+        
+        mobileMenuToggle.addEventListener('click', () => {
+            navLinks.classList.toggle('active');
+            mobileMenuToggle.textContent = navLinks.classList.contains('active') ? '✕' : '☰';
+        });
+        
+        // Close mobile menu when clicking a link
+        document.querySelectorAll('.nav-link').forEach(link => {
+            link.addEventListener('click', () => {
+                navLinks.classList.remove('active');
+                mobileMenuToggle.textContent = '☰';
+            });
+        });
+        
+        // Close mobile menu when clicking outside
+        document.addEventListener('click', (e) => {
+            if (!e.target.closest('nav') && navLinks.classList.contains('active')) {
+                navLinks.classList.remove('active');
+                mobileMenuToggle.textContent = '☰';
+            }
+        });
+    </script>
+    
+    <!-- Load third-party scripts -->
+    <script src="https://www.google.com/recaptcha/api.js?render=6LcQdfYqAAAAAKzkIhm2SunA7djkGUHsVeyJsiav"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+    
+    <!-- Initialize EmailJS -->
+    <script>
+        (function() {
+            emailjs.init("YOUR_PUBLIC_KEY");
+        })();
+    </script>
+    
+    <!-- Load main script after DOM is ready -->
+    <script src="script.js" defer></script>
+
+    <!-- Add this script before the closing </body> tag -->
+    <script>
+        // Portfolio item click functionality
+        document.addEventListener('DOMContentLoaded', function() {
+            const portfolioData = {
+                'digital-design': {
+                    title: 'DKNY & Kate Spade Mood Boards',
+                    description: 'A collection of digital mood boards exploring urban minimalism and playful sophistication for iconic fashion brands. This project involved creating comprehensive mood boards focusing on upcoming seasonal trends, color palettes, and textile selections.',
+                    category: 'Digital Design',
+                    year: '2023',
+                    image: './images/T9R3VI.webp',
+                    technologies: ['Adobe Photoshop', 'Illustrator', 'Digital Color Theory', 'Trend Analysis']
+                },
+                'visual-illustration': {
+                    title: 'Fashion Forecast Trends',
+                    description: 'Hand-drawn and digital illustrations predicting upcoming seasonal trends with a focus on innovative silhouettes and textures. Comprehensive analysis of global fashion trends and market directions.',
+                    category: 'Visual Design',
+                    year: '2023',
+                    image: './images/091b30536c345bbad3031934211a76ae.jpg',
+                    technologies: ['Traditional Sketching', 'Digital Rendering', 'Color Theory', 'Trend Forecasting']
+                },
+                'draping': {
+                    title: 'Draping',
+                    description: 'Experimental draping techniques utilized to create structured yet flowing princess line dresses. This project showcases the integration of classical techniques with contemporary design elements.',
+                    category: 'Draping',
+                    year: '2024',
+                    image: './images/OIP (5).jpg',
+                    technologies: ['Muslin Draping', 'Pattern Making', 'Garment Construction', 'Fitting Techniques']
+                },
+                'global-fashion': {
+                    title: 'Textile Research',
+                    description: 'An exploration of traditional and innovative textile techniques from various cultures, examining sustainability practices and modern applications in fashion design.',
+                    category: 'Previous Projects',
+                    year: '2022',
+                    image: './images/AdobeStock_150583573_Editorial_Use_Only-683x1024.jpeg',
+                    technologies: ['Sustainable Materials', 'Traditional Techniques', 'Cultural Research', 'Textile Innovation']
+                }
+            };
+
+            // Get modal elements
+            const modal = document.getElementById('portfolioModal');
+            const modalImage = document.getElementById('modalImage');
+            const modalTitle = document.getElementById('modalTitle');
+            const modalDesc = document.getElementById('modalDesc');
+            const modalCategory = document.getElementById('modalCategory');
+            const modalYear = document.getElementById('modalYear');
+            const modalTech = document.getElementById('modalTech');
+            const modalClose = document.getElementById('modalClose');
+
+            // Add click event to portfolio items
+            document.querySelectorAll('.portfolio-item').forEach(item => {
+                item.addEventListener('click', () => {
+                    const projectId = item.getAttribute('data-id');
+                    const project = portfolioData[projectId];
+
+                    if (project) {
+                        // Update modal content
+                        modalImage.src = project.image;
+                        modalImage.alt = project.title;
+                        modalTitle.textContent = project.title;
+                        modalDesc.textContent = project.description;
+                        modalCategory.textContent = project.category;
+                        modalYear.textContent = project.year;
+
+                        // Update technologies
+                        modalTech.innerHTML = '';
+                        project.technologies.forEach(tech => {
+                            const pill = document.createElement('div');
+                            pill.className = 'tech-pill';
+                            pill.textContent = tech;
+                            modalTech.appendChild(pill);
+                        });
+
+                        // Show modal
+                        modal.classList.add('open');
+                    }
+                });
+            });
+
+            // Close modal when clicking the close button
+            if (modalClose) {
+                modalClose.addEventListener('click', () => {
+                    modal.classList.remove('open');
+                });
+            }
+
+            // Close modal when clicking outside
+            if (modal) {
+                window.addEventListener('click', (e) => {
+                    if (e.target === modal) {
+                        modal.classList.remove('open');
+                    }
+                });
+            }
+        });
+    </script>
+
+    <script>
+        // Make content visible immediately
+        document.addEventListener('DOMContentLoaded', function() {
+            // Remove hiding from body
+            document.body.style.opacity = "1";
+            document.body.style.visibility = "visible";
+            document.body.classList.add('loaded');
+        });
+    </script>
+
+    <!-- Add this before </body> -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Trigger hero animations when page loads
+            setTimeout(function() {
+                document.querySelectorAll('.animate-on-scroll').forEach(function(element) {
+                    element.classList.add('active');
+                });
+            }, 500);
+            
+            // Reset animations when scrolling to about section
+            window.addEventListener('scroll', function() {
+                const aboutSection = document.getElementById('about');
+                const heroElements = document.querySelectorAll('.animate-on-scroll');
+                
+                // Check if about section is in view
+                const aboutPosition = aboutSection.getBoundingClientRect();
+                
+                // If about section is entering viewport
+                if (aboutPosition.top < window.innerHeight && aboutPosition.bottom >= 0) {
+                    // Remove active class first to reset animations
+                    heroElements.forEach(function(element) {
+                        element.classList.remove('active');
+                    });
+                    
+                    // Then re-add with a slight delay to trigger animations again
+                    setTimeout(function() {
+                        heroElements.forEach(function(element) {
+                            element.classList.add('active');
+                        });
+                    }, 100);
+                }
+            });
+        });
+    </script>
+
+    <script>
+        document.getElementById('currentYear').textContent = new Date().getFullYear();
+    </script>
+</body>
+</html> 

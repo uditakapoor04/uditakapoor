@@ -1,0 +1,24 @@
+# Node modules
+node_modules/
+
+# Large files
+images/digital/FINAL illustrator.pdf
+images/digital/FINAL.pdf
+images/draping/Your paragraph text.pdf
+images/digital/Udita_Kapoor_P1.pdf
+images/visual.pdf/Madeleine Vionnet Udita Kapoor .pdf
+images/visual.pdf/Kapoor- Diesel collection.pdf
+images/visual.pdf/FINAL PROJECT.pdf
+images/visual.pdf/FF211-Bespoke Royalty Udaipur.pdf
+images/digital/UKapoor_FF245FinalSpec.PDF .pdf
+images/privious/Identity (artwork).pdf
+images/privious/Fashion Project.pdf
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db 

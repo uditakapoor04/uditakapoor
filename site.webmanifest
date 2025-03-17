@@ -1,0 +1,14 @@
+{
+    "name": "Udita Kapoor Portfolio",
+    "short_name": "UK Portfolio",
+    "icons": [
+        {
+            "src": "/images/T9R3VI.webp",
+            "sizes": "192x192",
+            "type": "image/webp"
+        }
+    ],
+    "theme_color": "#0a0a0a",
+    "background_color": "#0a0a0a",
+    "display": "standalone"
+} 
