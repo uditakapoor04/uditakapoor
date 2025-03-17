@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Thank You | Udita Kapoor</title>
+    <link rel="icon" type="image/webp" href="./images/T9R3VI.webp">
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        .thank-you-page {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 2rem;
+            background: linear-gradient(135deg, #1a1a1a 0%, #0a0a0a 100%);
+        }
+        
+        .thank-you-title {
+            font-size: 3.5rem;
+            color: var(--accent-color, #ca9d75);
+            margin-bottom: 1.5rem;
+        }
+        
+        .thank-you-message {
+            font-size: 1.25rem;
+            max-width: 700px;
+            margin-bottom: 2rem;
+            line-height: 1.6;
+        }
+        
+        .btn-home {
+            margin-top: 1rem;
+        }
+        
+        .success-icon {
+            font-size: 5rem;
+            color: var(--accent-color, #ca9d75);
+            margin-bottom: 1.5rem;
+        }
+    </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+</head>
+<body>
+    <div class="thank-you-page">
+        <div class="success-icon">
+            <i class="fas fa-check-circle"></i>
+        </div>
+        <h1 class="thank-you-title">Message Received!</h1>
+        <p class="thank-you-message">Thank you for reaching out. I appreciate your interest and will respond to your message as soon as possible.</p>
+        <a href="index.html" class="btn btn-home">Return to Home</a>
+    </div>
+    
+    <script>
+        // Add current year to footer
+        document.addEventListener('DOMContentLoaded', function() {
+            const yearElement = document.getElementById('currentYear');
+            if (yearElement) {
+                yearElement.textContent = new Date().getFullYear();
+            }
+        });
+    </script>
+</body>
+</html> 
