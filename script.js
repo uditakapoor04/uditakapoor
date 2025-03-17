@@ -605,7 +605,7 @@ document.addEventListener('DOMContentLoaded', function() {
                                         <div class="pdf-content">
                                             <h4 class="pdf-title">Diesel Collection</h4>
                                             <p class="pdf-description">A contemporary design collection inspired by Diesel's urban aesthetic and innovative fabric treatments.</p>
-                                            <a href="images/visual.pdf/Kapoor- Diesel collection.pdf" target="_blank" class="pdf-view-btn">View Project</a>
+                                            <a href="#" onclick="openPdf('images/visual.pdf/Kapoor- Diesel collection.pdf'); return false;" class="pdf-view-btn">View Project</a>
                                         </div>
                                     </div>
                                     
@@ -620,7 +620,7 @@ document.addEventListener('DOMContentLoaded', function() {
                                         <div class="pdf-content">
                                             <h4 class="pdf-title">Madeleine Vionnet Study</h4>
                                             <p class="pdf-description">An in-depth analysis of Madeleine Vionnet's pioneering approach to bias cut and draping techniques.</p>
-                                            <a href="images/visual.pdf/Madeleine Vionnet Udita Kapoor .pdf" target="_blank" class="pdf-view-btn">View Project</a>
+                                            <a href="#" onclick="openPdf('images/visual.pdf/Madeleine Vionnet Udita Kapoor .pdf'); return false;" class="pdf-view-btn">View Project</a>
                                         </div>
                                     </div>
                                     
@@ -635,7 +635,7 @@ document.addEventListener('DOMContentLoaded', function() {
                                         <div class="pdf-content">
                                             <h4 class="pdf-title">Bespoke Royalty Udaipur</h4>
                                             <p class="pdf-description">Luxury design project inspired by the royal heritage and craftsmanship of Udaipur.</p>
-                                            <a href="images/visual.pdf/FF211-Bespoke Royalty Udaipur.pdf" target="_blank" class="pdf-view-btn">View Project</a>
+                                            <a href="#" onclick="openPdf('images/visual.pdf/FF211-Bespoke Royalty Udaipur.pdf'); return false;" class="pdf-view-btn">View Project</a>
                                         </div>
                                     </div>
                                     
@@ -650,7 +650,7 @@ document.addEventListener('DOMContentLoaded', function() {
                                         <div class="pdf-content">
                                             <h4 class="pdf-title">Final Project</h4>
                                             <p class="pdf-description">Comprehensive fashion design project showcasing integrated design concepts and execution.</p>
-                                            <a href="images/visual.pdf/FINAL PROJECT.pdf" target="_blank" class="pdf-view-btn">View Project</a>
+                                            <a href="#" onclick="openPdf('images/visual.pdf/FINAL PROJECT.pdf'); return false;" class="pdf-view-btn">View Project</a>
                                         </div>
                                     </div>
                                 </div>
@@ -1090,7 +1090,7 @@ document.addEventListener('DOMContentLoaded', function() {
                                             <div class="pdf-content">
                                                 <h4 class="pdf-title">FINAL Illustrator Project</h4>
                                                 <p class="pdf-description">A comprehensive digital design project showcasing technical mastery of Adobe Illustrator for fashion visualization.</p>
-                                                <a href="images/digital/FINAL illustrator.pdf" target="_blank" class="pdf-view-btn">View Project</a>
+                                                <a href="#" onclick="openPdf('images/digital/FINAL illustrator.pdf'); return false;" class="pdf-view-btn">View Project</a>
                                             </div>
                                         </div>
                                         
@@ -1104,7 +1104,7 @@ document.addEventListener('DOMContentLoaded', function() {
                                             <div class="pdf-content">
                                                 <h4 class="pdf-title">FINAL Design Project</h4>
                                                 <p class="pdf-description">The final design project demonstrating integrated digital design concepts and fashion visualization techniques.</p>
-                                                <a href="images/digital/FINAL.pdf" target="_blank" class="pdf-view-btn">View Project</a>
+                                                <a href="#" onclick="openPdf('images/digital/FINAL.pdf'); return false;" class="pdf-view-btn">View Project</a>
                                             </div>
                                         </div>
                                         
@@ -1118,7 +1118,7 @@ document.addEventListener('DOMContentLoaded', function() {
                                             <div class="pdf-content">
                                                 <h4 class="pdf-title">Project 1 Portfolio</h4>
                                                 <p class="pdf-description">A detailed portfolio presentation of early design concepts and digital exploration techniques.</p>
-                                                <a href="images/digital/Udita_Kapoor_P1.pdf" target="_blank" class="pdf-view-btn">View Project</a>
+                                                <a href="#" onclick="openPdf('images/digital/Udita_Kapoor_P1.pdf'); return false;" class="pdf-view-btn">View Project</a>
                                             </div>
                                         </div>
                                         
@@ -1132,7 +1132,7 @@ document.addEventListener('DOMContentLoaded', function() {
                                             <div class="pdf-content">
                                                 <h4 class="pdf-title">Final Specification Project</h4>
                                                 <p class="pdf-description">Technical specifications and detailed digital documentation for fashion design implementation.</p>
-                                                <a href="images/digital/UKapoor_FF245FinalSpec.PDF .pdf" target="_blank" class="pdf-view-btn">View Project</a>
+                                                <a href="#" onclick="openPdf('images/digital/UKapoor_FF245FinalSpec.PDF .pdf'); return false;" class="pdf-view-btn">View Project</a>
                                             </div>
                                         </div>
                                     </div>
@@ -1572,7 +1572,7 @@ document.addEventListener('DOMContentLoaded', function() {
                                         <div class="pdf-content">
                                             <h4 class="pdf-title">Identity (artwork)</h4>
                                             <p class="pdf-description">An exploration of personal and cultural identity through artistic fashion expression.</p>
-                                            <a href="./images/privious/Identity (artwork).pdf" target="_blank" class="pdf-view-btn">View Project</a>
+                                            <a href="#" onclick="openPdf('./images/privious/Identity (artwork).pdf'); return false;" class="pdf-view-btn">View Project</a>
                                         </div>
                                     </div>
                                     
@@ -1586,7 +1586,7 @@ document.addEventListener('DOMContentLoaded', function() {
                                         <div class="pdf-content">
                                             <h4 class="pdf-title">Fashion Project</h4>
                                             <p class="pdf-description">A comprehensive fashion design project showcasing early design concepts and techniques.</p>
-                                            <a href="./images/privious/Fashion Project.pdf" target="_blank" class="pdf-view-btn">View Project</a>
+                                            <a href="#" onclick="openPdf('./images/privious/Fashion Project.pdf'); return false;" class="pdf-view-btn">View Project</a>
                                         </div>
                                     </div>
                                 </div>
@@ -1995,7 +1995,7 @@ document.addEventListener('DOMContentLoaded', function() {
                                         <div class="pdf-content">
                                             <h4 class="pdf-title">Princess Line Dress Draping</h4>
                                             <p class="pdf-description">A comprehensive documentation of the draping process for princess line dresses, showcasing various techniques and design iterations.</p>
-                                            <a href="./images/draping/Your paragraph text.pdf" target="_blank" class="pdf-view-btn">View Project</a>
+                                            <a href="#" onclick="openPdf('./images/draping/Your paragraph text.pdf'); return false;" class="pdf-view-btn">View Project</a>
                                         </div>
                                     </div>
                                 </div>

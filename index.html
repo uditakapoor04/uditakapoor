@@ -22,11 +22,24 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     
-    <!-- PDF.js CDN -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.4.120/pdf.min.js"></script>
+    <!-- Updated PDF.js CDN with error handling -->
     <script>
-        // PDF.js initialization
-        pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.4.120/pdf.worker.min.js';
+        // PDF error handling function
+        function handlePdfError(error) {
+            console.error("PDF Error:", error);
+            alert("There was an error opening the PDF. Please try again or contact the site administrator.");
+        }
+        
+        // Function to ensure PDFs open in a new tab reliably
+        function openPdf(url) {
+            try {
+                window.open(url, '_blank');
+            } catch(e) {
+                console.error("Error opening PDF:", e);
+                alert("Your browser blocked the PDF from opening. Please enable popups for this site.");
+            }
+            return false; // Prevent default link behavior
+        }
     </script>
     
     <style>
