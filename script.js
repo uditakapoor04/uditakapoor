@@ -1128,10 +1128,7 @@ document.addEventListener('DOMContentLoaded', function() {
                                             <div class="pdf-content">
                                                 <h4 class="pdf-title">FINAL Illustrator Project</h4>
                                                 <p class="pdf-description">A comprehensive digital design project showcasing technical mastery of Adobe Illustrator for fashion visualization.</p>
-                                                <a href="#" onclick="alert('This large PDF file (123MB) will be hosted on Google Drive or similar service when deployed to GitHub Pages. Replace this with your cloud storage link.'); return false;" class="pdf-view-btn">View Project</a>
-                                                <!-- For GitHub Pages deployment, replace with:
-                                                <a href="#" onclick="window.open('https://drive.google.com/file/YOUR_FILE_ID/view', '_blank'); return false;" class="pdf-view-btn">View Project</a>
-                                                -->
+                                                <a href="#" onclick="openPdf('images/digital/FINAL illustrator.pdf'); return false;" class="pdf-view-btn">View Project</a>
                                             </div>
                                         </div>
                                         
@@ -1145,7 +1142,7 @@ document.addEventListener('DOMContentLoaded', function() {
                                             <div class="pdf-content">
                                                 <h4 class="pdf-title">FINAL Design Project</h4>
                                                 <p class="pdf-description">The final design project demonstrating integrated digital design concepts and fashion visualization techniques.</p>
-                                                <a href="#" onclick="openPdf('images/digital/FINAL.pdf'); return false;" class="pdf-view-btn">View Project</a>
+                                                <a href="#" onclick="openPdf('images/digital/FINAL (1).pdf'); return false;" class="pdf-view-btn">View Project</a>
                                             </div>
                                         </div>
                                         
@@ -2239,47 +2236,24 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 });
 
-// Improved PDF opening function for GitHub Pages compatibility
+/**
+ * Opens a PDF file in the custom PDF viewer
+ * @param {string} url - Path to the PDF file
+ */
 function openPdf(url) {
-    try {
-        console.log("Opening PDF:", url);
-        
-        // Check if URL is a cloud storage URL (starts with http or https)
-        const isCloudUrl = url.startsWith('http://') || url.startsWith('https://');
-        
-        // If it's a cloud URL, open directly
-        if (isCloudUrl) {
-            window.open(url, '_blank');
-            return;
-        }
-        
-        // For local files, use the viewer
-        // Extract just the filename for the title
-        const fileName = url.split('/').pop();
-        const fileTitle = fileName.replace(/\.[^/.]+$/, "").replace(/_/g, " ");
-        
-        // Encode the URL and title for use in query parameters
-        const encodedUrl = encodeURIComponent(url);
-        const encodedTitle = encodeURIComponent(fileTitle);
-        
-        // Get the base URL for GitHub Pages compatibility
-        const baseUrl = window.location.href.split('/').slice(0, -1).join('/');
-        const fullUrl = baseUrl + '/' + url;
-        
-        // Open the PDF viewer with the PDF path and title as query parameters
-        const viewerUrl = `pdf-viewer.html?file=${encodedUrl}&title=${encodedTitle}`;
-        const newWindow = window.open(viewerUrl, '_blank');
-        
-        // If window was blocked or couldn't open
-        if (!newWindow || newWindow.closed || typeof newWindow.closed === 'undefined') {
-            console.error("Popup blocked or PDF viewer couldn't open");
-            // Fallback: direct link
-            window.location.href = url;
-        }
-    } catch (error) {
-        console.error("Error opening PDF:", error);
-        alert("There was an error opening the PDF. Please try again or download it directly.");
-        // Fallback: Try to open the PDF directly
+    // Make sure url starts with a slash if it's a relative path
+    if (!url.startsWith('http') && !url.startsWith('/')) {
+        url = '/' + url;
+    }
+    
+    // For local development with direct file paths
+    if (url.includes('/c:/')) {
+        // Use file protocol for direct file access
+        window.open(url.replace('/c:/', 'file:///c:/'), '_blank');
+    } else {
+        // For web-hosted PDFs, ensure proper URL formatting
+        // Replace spaces with %20
+        url = url.replace(/ /g, '%20');
         window.open(url, '_blank');
     }
 }
