@@ -6,6 +6,44 @@ document.addEventListener('DOMContentLoaded', function() {
     
     console.log('DOM content loaded');
     
+    // Resume Modal Functionality
+    const resumeButton = document.getElementById('resumeButton');
+    const resumeModal = document.getElementById('resumeModal');
+    const resumeModalClose = document.getElementById('resumeModalClose');
+    
+    if (resumeButton && resumeModal) {
+        // Open the resume modal when the button is clicked
+        resumeButton.addEventListener('click', function(e) {
+            e.preventDefault();
+            resumeModal.classList.add('open');
+            document.body.style.overflow = 'hidden'; // Prevent body scrolling
+        });
+        
+        // Close the modal when clicking the close button
+        if (resumeModalClose) {
+            resumeModalClose.addEventListener('click', function() {
+                resumeModal.classList.remove('open');
+                document.body.style.overflow = ''; // Restore body scrolling
+            });
+        }
+        
+        // Close the modal when clicking outside the modal content
+        window.addEventListener('click', function(e) {
+            if (e.target === resumeModal) {
+                resumeModal.classList.remove('open');
+                document.body.style.overflow = ''; // Restore body scrolling
+            }
+        });
+        
+        // Close the modal when pressing the Escape key
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape' && resumeModal.classList.contains('open')) {
+                resumeModal.classList.remove('open');
+                document.body.style.overflow = ''; // Restore body scrolling
+            }
+        });
+    }
+    
     // Find the Visual Illustration portfolio item
     const visualItem = document.querySelector('.portfolio-item[data-id="visual-illustration"]');
     
@@ -2206,6 +2244,16 @@ function openPdf(url) {
     try {
         console.log("Opening PDF:", url);
         
+        // Check if URL is a cloud storage URL (starts with http or https)
+        const isCloudUrl = url.startsWith('http://') || url.startsWith('https://');
+        
+        // If it's a cloud URL, open directly
+        if (isCloudUrl) {
+            window.open(url, '_blank');
+            return;
+        }
+        
+        // For local files, use the viewer
         // Extract just the filename for the title
         const fileName = url.split('/').pop();
         const fileTitle = fileName.replace(/\.[^/.]+$/, "").replace(/_/g, " ");
@@ -2214,18 +2262,96 @@ function openPdf(url) {
         const encodedUrl = encodeURIComponent(url);
         const encodedTitle = encodeURIComponent(fileTitle);
         
+        // Get the base URL for GitHub Pages compatibility
+        const baseUrl = window.location.href.split('/').slice(0, -1).join('/');
+        const fullUrl = baseUrl + '/' + url;
+        
         // Open the PDF viewer with the PDF path and title as query parameters
         const viewerUrl = `pdf-viewer.html?file=${encodedUrl}&title=${encodedTitle}`;
         const newWindow = window.open(viewerUrl, '_blank');
         
+        // If window was blocked or couldn't open
         if (!newWindow || newWindow.closed || typeof newWindow.closed === 'undefined') {
-            // Popup was likely blocked
-            console.warn("PDF viewer popup may have been blocked");
-            alert("Your browser might have blocked the PDF viewer from opening. Please check for popup blockers and try again.");
+            console.error("Popup blocked or PDF viewer couldn't open");
+            // Fallback: direct link
+            window.location.href = url;
         }
-    } catch(e) {
-        console.error("Error opening PDF viewer:", e);
-        alert("There was an error opening the PDF viewer. Please try again or contact the site administrator.");
+    } catch (error) {
+        console.error("Error opening PDF:", error);
+        alert("There was an error opening the PDF. Please try again or download it directly.");
+        // Fallback: Try to open the PDF directly
+        window.open(url, '_blank');
     }
-    return false; // Prevent default link behavior
 }
+
+// PDF Handler for Resume
+document.addEventListener('DOMContentLoaded', function() {
+    // Get the resume button
+    const resumeButton = document.querySelector('a[href*="Udita_Kapoor_Resume.pdf"]');
+    
+    if (resumeButton) {
+        resumeButton.addEventListener('click', function(e) {
+            e.preventDefault();
+            
+            // Get the PDF path
+            const pdfPath = this.getAttribute('href');
+            
+            // Open PDF in new tab with error handling
+            try {
+                const newWindow = window.open(pdfPath, '_blank');
+                
+                // Check if popup was blocked
+                if (!newWindow || newWindow.closed || typeof newWindow.closed === 'undefined') {
+                    console.warn('Popup blocked or PDF couldn\'t be opened');
+                    // Fallback - direct link
+                    window.location.href = pdfPath;
+                }
+            } catch (error) {
+                console.error('Error opening PDF:', error);
+                // Fallback - direct link
+                window.location.href = pdfPath;
+            }
+        });
+    }
+});
+
+// Resume Modal Functionality
+document.addEventListener('DOMContentLoaded', function() {
+    const resumeButton = document.getElementById('resumeButton');
+    const resumeModal = document.getElementById('resumeModal');
+    const resumeModalClose = document.getElementById('resumeModalClose');
+    
+    if (resumeButton && resumeModal && resumeModalClose) {
+        // Open modal when resume button is clicked
+        resumeButton.addEventListener('click', function(e) {
+            e.preventDefault();
+            resumeModal.classList.add('open');
+            document.body.style.overflow = 'hidden'; // Prevent scrolling when modal is open
+        });
+        
+        // Close modal when X is clicked
+        resumeModalClose.addEventListener('click', function() {
+            resumeModal.classList.remove('open');
+            document.body.style.overflow = ''; // Restore scrolling
+        });
+        
+        // Close modal when clicking outside the content
+        window.addEventListener('click', function(e) {
+            if (e.target === resumeModal) {
+                resumeModal.classList.remove('open');
+                document.body.style.overflow = ''; // Restore scrolling
+            }
+        });
+        
+        // Close modal with Escape key
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape' && resumeModal.classList.contains('open')) {
+                resumeModal.classList.remove('open');
+                document.body.style.overflow = ''; // Restore scrolling
+            }
+        });
+    }
+});
+
+// PDF Handler for Resume
+// ... existing code ...

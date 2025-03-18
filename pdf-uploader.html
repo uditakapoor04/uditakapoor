@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PDF Uploader Tool - Udita Portfolio</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            color: #333;
+            background-color: #f8f8f8;
+        }
+        
+        h1 {
+            color: #ca9d75;
+            border-bottom: 2px solid #ca9d75;
+            padding-bottom: 10px;
+        }
+        
+        .step {
+            margin-bottom: 30px;
+            padding: 20px;
+            background-color: white;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        
+        .step h2 {
+            margin-top: 0;
+            color: #444;
+        }
+        
+        .file-list {
+            margin: 20px 0;
+            border: 1px solid #ddd;
+            padding: 15px;
+            border-radius: 5px;
+            background-color: #f9f9f9;
+        }
+        
+        .file-card {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px;
+            margin-bottom: 10px;
+            background-color: white;
+            border: 1px solid #eee;
+            border-radius: 4px;
+        }
+        
+        .file-name {
+            flex-grow: 1;
+        }
+        
+        .file-size {
+            color: #666;
+            margin-right: 20px;
+        }
+        
+        .file-link {
+            width: 300px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+        
+        button {
+            background-color: #ca9d75;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+        
+        button:hover {
+            background-color: #b58c65;
+        }
+        
+        input[type="file"] {
+            display: block;
+            margin: 15px 0;
+        }
+        
+        textarea {
+            width: 100%;
+            height: 100px;
+            margin: 15px 0;
+            padding: 10px;
+            font-family: monospace;
+            font-size: 14px;
+            border-radius: 4px;
+            border: 1px solid #ddd;
+        }
+        
+        .code-block {
+            background-color: #f5f5f5;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            padding: 15px;
+            margin: 15px 0;
+            font-family: monospace;
+            white-space: pre-wrap;
+        }
+    </style>
+</head>
+<body>
+    <h1>PDF Uploader Tool</h1>
+    <p>A simple tool to help you prepare your PDFs for cloud hosting and generate the correct code for your portfolio.</p>
+    
+    <div class="step">
+        <h2>Step 1: Select Your PDF Files</h2>
+        <p>Choose the PDF files from your portfolio that need to be uploaded to cloud storage.</p>
+        <input type="file" id="pdfFiles" multiple accept=".pdf">
+        <div class="file-list" id="selectedFiles">
+            <p>No files selected yet</p>
+        </div>
+    </div>
+    
+    <div class="step">
+        <h2>Step 2: Upload Files to Google Drive</h2>
+        <p>Upload these files to your Google Drive account and make them publicly accessible:</p>
+        <ol>
+            <li>Go to <a href="https://drive.google.com" target="_blank">Google Drive</a></li>
+            <li>Create a new folder for your portfolio PDFs</li>
+            <li>Upload all the PDF files listed above</li>
+            <li>Right-click on each file → Share → Get Link → Change to "Anyone with the link" → Copy Link</li>
+            <li>Paste the links back here for each file</li>
+        </ol>
+    </div>
+    
+    <div class="step">
+        <h2>Step 3: Update Your Code</h2>
+        <p>Once you have your Google Drive links, paste them here for each file:</p>
+        <div id="linkInputs">
+            <!-- Link inputs will be generated here -->
+        </div>
+        
+        <h3>Generated Code:</h3>
+        <p>Here's the updated code to replace in your script.js file:</p>
+        <textarea id="generatedCode" readonly></textarea>
+        <button id="copyCode">Copy Code</button>
+    </div>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const pdfFiles = document.getElementById('pdfFiles');
+            const selectedFiles = document.getElementById('selectedFiles');
+            const linkInputs = document.getElementById('linkInputs');
+            const generatedCode = document.getElementById('generatedCode');
+            const copyCodeBtn = document.getElementById('copyCode');
+            
+            // Store file details
+            let files = [];
+            
+            // When files are selected
+            pdfFiles.addEventListener('change', function(e) {
+                files = Array.from(e.target.files);
+                
+                if (files.length === 0) {
+                    selectedFiles.innerHTML = '<p>No files selected yet</p>';
+                    return;
+                }
+                
+                // Display selected files
+                selectedFiles.innerHTML = '';
+                files.forEach(file => {
+                    const fileSize = formatFileSize(file.size);
+                    const fileElement = document.createElement('div');
+                    fileElement.className = 'file-card';
+                    fileElement.innerHTML = `
+                        <div class="file-name">${file.name}</div>
+                        <div class="file-size">${fileSize}</div>
+                    `;
+                    selectedFiles.appendChild(fileElement);
+                });
+                
+                // Create link input fields
+                linkInputs.innerHTML = '';
+                files.forEach((file, index) => {
+                    const linkInput = document.createElement('div');
+                    linkInput.innerHTML = `
+                        <p><strong>${file.name}</strong></p>
+                        <input type="text" id="link-${index}" placeholder="Paste Google Drive link here" 
+                               style="width: 80%; padding: 8px; margin-bottom: 15px;">
+                        <p style="font-size: 12px; color: #666; margin-top: -10px;">
+                            Original path: images/digital/${file.name} 
+                            (adjust if your path is different)
+                        </p>
+                    `;
+                    linkInputs.appendChild(linkInput);
+                    
+                    // Update generated code when link changes
+                    setTimeout(() => {
+                        document.getElementById(`link-${index}`).addEventListener('input', updateGeneratedCode);
+                    }, 100);
+                });
+                
+                // Initialize generated code
+                updateGeneratedCode();
+            });
+            
+            // Format file size
+            function formatFileSize(bytes) {
+                if (bytes < 1024) return bytes + ' bytes';
+                else if (bytes < 1048576) return (bytes / 1024).toFixed(1) + ' KB';
+                else return (bytes / 1048576).toFixed(1) + ' MB';
+            }
+            
+            // Update generated code
+            function updateGeneratedCode() {
+                let code = '// Updated PDF links for GitHub Pages\n';
+                
+                files.forEach((file, index) => {
+                    const linkInput = document.getElementById(`link-${index}`);
+                    const link = linkInput ? linkInput.value.trim() : '';
+                    
+                    const originalPath = `images/digital/${file.name}`;
+                    
+                    if (link) {
+                        // Extract Google Drive file ID
+                        let fileId = '';
+                        if (link.includes('drive.google.com')) {
+                            // Try to extract the file ID from Google Drive link
+                            const matches = link.match(/\/d\/([^\/]+)/);
+                            if (matches && matches[1]) {
+                                fileId = matches[1];
+                                code += `// Original: openPdf('${originalPath}');\n`;
+                                code += `openPdf('https://drive.google.com/file/d/${fileId}/view');\n\n`;
+                            } else {
+                                code += `// Original: openPdf('${originalPath}');\n`;
+                                code += `openPdf('${link}');\n\n`;
+                            }
+                        } else {
+                            code += `// Original: openPdf('${originalPath}');\n`;
+                            code += `openPdf('${link}');\n\n`;
+                        }
+                    } else {
+                        code += `// TODO: Replace with cloud link\n`;
+                        code += `// openPdf('${originalPath}');\n\n`;
+                    }
+                });
+                
+                generatedCode.value = code;
+            }
+            
+            // Copy code button
+            copyCodeBtn.addEventListener('click', function() {
+                generatedCode.select();
+                document.execCommand('copy');
+                alert('Code copied to clipboard!');
+            });
+        });
+    </script>
+</body>
+</html> 

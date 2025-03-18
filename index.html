@@ -600,11 +600,17 @@
     <section id="hero" class="hero">
         <div class="container">
             <div class="hero-content">
-                <h1 class="animate-on-scroll fade-up-1">Udita <span class="accent">Kapoor</span></h1>
+                <h1 class="animate-on-scroll fade-up-1 active">
+                    <span class="logo-text">UDITA</span>
+                    <span class="logo-text">KAPOOR</span>
+                </h1>
+                <div class="designer-title animate-on-scroll fade-up-1 active">Fashion Designer</div>
                 <p class="hero-subtitle animate-on-scroll fade-up-2">Blending creativity and compassion to create fashion with purpose</p>
-                <div class="button-group animate-on-scroll fade-up-3">
+                <div class="button-group animate-on-scroll fade-up-3 active">
                     <a href="#portfolio" class="btn">View My Work</a>
-                    <a href="./images/Udita_Kapoor_Resume.pdf" class="btn btn-secondary" target="_blank">View Resume</a>
+                    <a href="#" class="btn btn-secondary" id="resumeButton">
+                        <i class="far fa-file-pdf"></i> View Resume
+                    </a>
                 </div>
                 <div class="social-icons animate-on-scroll fade-up-4">
                     <a href="https://www.linkedin.com/in/udita-kapoor-9785b02a6" class="social-icon linkedin" target="_blank">
@@ -834,6 +840,22 @@
         </div>
     </footer>
 
+    <!-- Resume Modal -->
+    <div id="resumeModal" class="modal">
+        <div class="modal-content">
+            <span id="resumeModalClose" class="modal-close">&times;</span>
+            <div class="modal-header">
+                <h2>Professional Resume</h2>
+                <p class="modal-subtitle">Click anywhere outside or use the X button to close</p>
+            </div>
+            <div class="modal-body">
+                <div class="resume-container">
+                    <img src="./images/Screenshot 2025-03-17 193830.png" alt="Udita Kapoor Resume" class="resume-image">
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- Portfolio Modal HTML Structure -->
     <div id="portfolioModal" class="modal">
         <div class="modal-content">
@@ -1030,6 +1052,36 @@
 
     <script>
         document.getElementById('currentYear').textContent = new Date().getFullYear();
+    </script>
+
+    <!-- PDF Handling Guide (hidden, for development only) -->
+    <div id="pdfGuide" style="display: none; position: fixed; bottom: 20px; right: 20px; background: #222; color: white; padding: 15px; border-radius: 8px; z-index: 9999; max-width: 350px; font-size: 14px; box-shadow: 0 4px 15px rgba(0,0,0,0.3);">
+        <h4 style="margin-top: 0; color: #ca9d75;">PDF Deployment Guide</h4>
+        <p>PDFs may not work on GitHub Pages if they're large files. For proper deployment:</p>
+        <ol style="padding-left: 20px; margin-bottom: 10px;">
+            <li>Upload your PDFs to Google Drive or another cloud storage</li>
+            <li>Make them publicly accessible with sharing links</li>
+            <li>Replace local PDF paths in script.js with direct links</li>
+        </ol>
+        <p style="margin-bottom: 10px;"><strong>Example:</strong><br>
+        openPdf('images/digital/FINAL.pdf');<br>
+        ↓<br>
+        openPdf('https://drive.google.com/file/d/YOUR_FILE_ID/view');</p>
+        <button onclick="this.parentNode.style.display='none';" style="background: #ca9d75; border: none; color: white; padding: 5px 10px; border-radius: 4px; cursor: pointer;">Close</button>
+    </div>
+
+    <!-- For development only, show the PDF guide -->
+    <script>
+        // Only show in development
+        if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
+            document.getElementById('pdfGuide').style.display = 'block';
+            
+            // Hide after 8 seconds
+            setTimeout(() => {
+                const guide = document.getElementById('pdfGuide');
+                if (guide) guide.style.display = 'none';
+            }, 8000);
+        }
     </script>
 </body>
 </html> 
