@@ -148,6 +148,11 @@ app.post('/submit-form', async (req, res) => {
 });
 
 const PORT = process.env.PORT || 8080;
-app.listen(PORT, () => {
-    console.log(`Server running on port ${PORT}`);
+const HOST = process.env.HOST || '0.0.0.0'; // Listen on all network interfaces
+
+app.listen(PORT, HOST, () => {
+    console.log(`Server running on http://${HOST}:${PORT}`);
+    console.log(`Local: http://localhost:${PORT}`);
+    console.log(`Network: http://[your-ip-address]:${PORT}`);
+    console.log('To find your IP address, run: ipconfig (Windows) or ifconfig (Mac/Linux)');
 }); 

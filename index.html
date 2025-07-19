@@ -7,7 +7,7 @@
     <meta name="keywords" content="fashion design, portfolio, DKNY, Kate Spade, FIT, fashion illustration, draping, textile design">
     <meta name="author" content="Udita Kapoor">
     
-    <!-- Prevent PDF viewer plugins from activating -->
+    <!-- Compatibility meta tags -->
     <meta name="X-Content-Type-Options" content="nosniff">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     
@@ -19,8 +19,8 @@
     
     <title>Udita Kapoor | Fashion Designer</title>
     
-    <!-- Simplified favicon -->
-    <link rel="icon" type="image/webp" href="./images/T9R3VI.webp">
+    <!-- Updated favicon with multiple formats -->
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>👗</text></svg>">
     
     <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
@@ -519,20 +519,94 @@
                 height: 200px;
             }
         }
+
+        /* Dress stage will move slightly for parallax */
+        .dress-stage {
+            will-change: transform;
+        }
+
+        /* Place the two dress planes slightly apart to avoid z-fight */
+        .dress.front {
+            transform: translateZ(8px); /* move a little toward the viewer */
+        }
+        .dress.back {
+            transform: translateZ(8px); /* face camera directly */
+        }
+
+        /* Smooth any programmatic rotations */
+        .dress-wrapper {
+            transition: none;
+        }
+
+        /* Remove white highlight overlay on dress */
+        .dress.main::before { background:none !important; }
+        /* Remove drop-shadow glow */
+        .dress { filter:none !important; }
+
+        /* === Quick 3-second cross-fade with subtle tilt === */
+        @keyframes fadeFront {
+            0%,50%   { opacity:1; }
+            100%     { opacity:0; }
+        }
+        @keyframes fadeBack {
+            0%,50%   { opacity:0; }
+            100%     { opacity:1; }
+        }
+
+        /* subtle rotation + scale to feel more physical */
+        @keyframes tiltFront {
+            0%,50% { transform:translateZ(8px) rotateY(0deg) scale(1); }
+            100%   { transform:translateZ(8px) rotateY(10deg) scale(0.97); }
+        }
+        @keyframes tiltBack {
+            0%,50% { transform:translateZ(8px) rotateY(-10deg) scale(0.97); }
+            100%   { transform:translateZ(8px) rotateY(0deg)  scale(1); }
+        }
+
+        .dress.front {
+            animation:
+                fadeFront 3s ease-in-out forwards,
+                tiltFront 3s ease-in-out forwards;
+        }
+        .dress.back  {
+            animation:
+                fadeBack 3s ease-in-out forwards,
+                tiltBack 3s ease-in-out forwards;
+        }
+
+        /* Prompt text */
+        .click-prompt {
+            position:absolute;
+            width:100%;
+            bottom:40px;
+            text-align:center;
+            font-size:0.95rem;
+            letter-spacing:1px;
+            opacity:0;
+            font-family:'Helvetica',sans-serif;
+            pointer-events:none; /* overlay handles click */
+            transform:translateY(20px);
+            animation: showPrompt 0.8s 2.8s forwards ease-out;
+        }
+
+        .click-prompt span{
+            display:inline-block;
+            padding:12px 28px;
+            border:1px solid var(--accent-color,#ca9d75);
+            border-radius:30px;
+            background:rgba(202,157,117,0.12);
+            color:#ffffff;
+            box-shadow:0 0 8px rgba(202,157,117,0.4);
+            backdrop-filter:blur(2px);
+        }
+
+        @keyframes showPrompt{0%{opacity:0;transform:translateY(20px);}100%{opacity:1;transform:translateY(0);}}
     </style>
-</head>
-<body>
-    <!-- Loading Screen -->
-    <div class="loading-screen">
-        <div class="loading-content">
-            <div class="loading-logo">UDITA KAPOOR</div>
-            <p>Fashion Designer</p>
-            <div class="loading-runway">
-                <div class="runway-line"></div>
-                <div class="runway-model"></div>
-            </div>
-        </div>
-    </div>
+    <!-- Remove lighting / spotlights to keep full black background -->
+    <style>
+        .spotlight, .spotlight-container { display:none !important; }
+        .hero::before { background:none !important; }
+    </style>
 
     <script>
         // Runway-Inspired Loading
@@ -564,16 +638,7 @@
                 }, 1000);
             }, 500);
             
-            // Loading Screen - changed from 1500 to 2000 (2 seconds)
-            setTimeout(() => {
-                document.querySelector('.loading-screen').style.opacity = '0';
-                setTimeout(() => {
-                    document.querySelector('.loading-screen').style.display = 'none';
-                    document.body.className = 'loaded';
-                    document.body.style.opacity = '1';
-                    document.body.style.visibility = 'visible';
-                }, 500);
-            }, 2000);
+            /* Loading screen now stays until user clicks the dress */
         });
     </script>
     
@@ -608,8 +673,8 @@
                 <p class="hero-subtitle animate-on-scroll fade-up-2">Blending creativity and compassion to create fashion with purpose</p>
                 <div class="button-group animate-on-scroll fade-up-3 active">
                     <a href="#portfolio" class="btn">View My Work</a>
-                    <a href="#" class="btn btn-secondary" id="resumeButton">
-                        <i class="far fa-file-pdf"></i> View Resume
+                    <a href="./resume/ChatGPT Image Jul 18, 2025, 04_56_59 PM.png" class="btn btn-secondary" id="resumeButton">
+                        <i class="far fa-file-alt"></i> View Resume
                     </a>
                 </div>
                 <div class="social-icons animate-on-scroll fade-up-4">
@@ -635,9 +700,13 @@
                 </div>
                 <div class="about-text">
                     <h3>Summary</h3>
-                    <p>I am a motivated and independent Fashion Design Student currently pursuing an Associate in Applied Science in Fashion Design at the Fashion Institute of Technology in New York. As a self-driven fashion design student, I am eager to apply my skills and knowledge to real-world challenges through an internship role.</p>
-                    <p>My design philosophy centers around creating mood boards with thorough research and brand collaboration. I've worked on projects involving brands like DKNY and Kate Spade to show calm and effervescence in the form of soft aesthetic into the big noisy city life.</p>
-                    <p>I'm passionate about visual illustration, researching fashion forecast trends, and experimenting with draping techniques. My educational background includes studies at Podar International School in Mumbai, where I focused on Psychology, Business, Art and Design, English, French, and Economics.</p>
+                    <p style="font-size: 1.1rem; line-height: 1.6;">I'm a passionate and independent Fashion Design student studying at the Fashion Institute of Technology (FIT) in New York. Right now, I'm working on my Associate degree and will continue with my Bachelor's in Fashion Design.
+                    </p>
+                    <p style="font-size: 1.1rem; line-height: 1.6;">I love bringing ideas to life through draping, patternmaking, digital design, and visual design. I always start with strong research and aim to create designs that tell a story. One of my favorite projects was a mix of DKNY and Kate Spade, where I explored soft and calm designs inspired by big city life.
+                    </p>
+                    <p style="font-size: 1.1rem; line-height: 1.6;">This summer, I worked at Gerber Childrenswear LLC as a Design and Technical Design Intern. I helped the team with things like making tech packs, fitting clothes using muslin, creating digital sketches in Adobe Illustrator, and reviewing samples. I also used a system called BlueCherry to track product details and worked with teams in China to manage updates and timelines.
+
+                        I'm always excited to learn more, be part of creative teams, and grow as a designer by working on real-world projects.</p>
                     
                     <div class="stats">
                         <div>
@@ -663,13 +732,7 @@
         <div class="container">
             <h2>Portfolio</h2>
             
-            <div class="filter-container">
-                <button class="filter-button active" data-filter="all">All Projects</button>
-                <button class="filter-button" data-filter="ready-to-wear">Digital Design</button>
-                <button class="filter-button" data-filter="couture">Visual Design</button>
-                <button class="filter-button" data-filter="accessories">Draping</button>
-                <button class="filter-button" data-filter="sustainable">Previous Projects</button>
-            </div>
+
             
             <div class="portfolio-grid">
                 <!-- Digital Design Item -->
@@ -683,7 +746,7 @@
                     </div>
                     <div class="portfolio-overlay">
                         <h3 class="portfolio-title">Digital Design</h3>
-                        <a href="/c:/Users/user/Desktop/uditqa/images/digital/Udita_Kapoor_P1.pdf" target="_blank" class="btn btn-secondary">View Project</a>
+                        <button class="btn btn-secondary view-project-btn">View Project</button>
                     </div>
                 </div>
 
@@ -698,7 +761,7 @@
                     </div>
                     <div class="portfolio-overlay">
                         <h3 class="portfolio-title">Visual Design</h3>
-                        <a href="/c:/Users/user/Desktop/uditqa/images/digital/UKapoor_FF245FinalSpec.PDF.pdf" target="_blank" class="btn btn-secondary">View Project</a>
+                        <button class="btn btn-secondary view-project-btn">View Project</button>
                     </div>
                 </div>
 
@@ -706,14 +769,14 @@
                 <div class="portfolio-item" data-id="draping" data-category="accessories">
                     <div class="image-container">
                         <img class="portfolio-image" 
-                            src="./images/Screenshot 2025-03-16 142422.png" 
+                            src="./draping main/13 (1).jpg" 
                             alt="Draping Techniques"
                             onerror="this.onerror=null; this.src='https://via.placeholder.com/600x450?text=Draping';">
                         <div class="image-error-text">Draping</div>
                     </div>
                     <div class="portfolio-overlay">
                         <h3 class="portfolio-title">Draping</h3>
-                        <a href="#" onclick="openPdf('/images/digital/FINAL%20illustrator.pdf'); return false;" class="pdf-view-btn">View Project</a>
+                        <button class="btn btn-secondary view-project-btn">View Project</button>
                     </div>
                 </div>
 
@@ -728,7 +791,7 @@
                     </div>
                     <div class="portfolio-overlay">
                         <h3 class="portfolio-title">Previous Projects</h3>
-                        <a href="/c:/Users/user/Desktop/uditqa/images/digital/FINAL.pdf" target="_blank" class="btn btn-secondary">View Project</a>
+                        <button class="btn btn-secondary view-project-btn">View Project</button>
                     </div>
                 </div>
             </div>
@@ -743,7 +806,7 @@
             <div class="contact-content">
                 <div class="contact-info">
                     <h3>Let's Connect</h3>
-                    <p>As a fashion design student at FIT in New York, I'm actively seeking internship opportunities to apply my skills in a professional setting. I'm an effective communicator, problem solver, and team player with skills in Adobe Photoshop and analytical thinking.</p>
+                    <p>As a fashion design student at FIT in New York. Seeking an internship to apply my skills in draping, patternmaking, and digital design, Visual design and sewing skills. With proficiency in Adobe Creative Suite, strong analytical thinking, and excellent communication, detail oriented, I'm a collaborative and problem-solving team player eager to gain hands-on experience and contribute to a dynamic team.</p>
                     <p>I'm passionate about digital design, visual illustration, and exploring global fashion trends. I've also volunteered as Head of School Photography club and participated in community service as a member of Leo club and FIT ICS (Indian Cultural Society) events.</p>
                     
                     <div class="contact-details">
@@ -754,78 +817,13 @@
                         <div class="contact-item">
                             <div class="contact-icon">📧</div>
                             <div>
-                                <a href="mailto:udita.kapoor04@gmail.com" class="email-link">udita.kapoor04@gmail.com</a>
+                                <a href="mailto:Udita_kapoor@fitnyc.edu" class="email-link">Udita_kapoor@fitnyc.edu</a>
                             </div>
                         </div>
                     </div>
                 </div>
                 
-                <div class="contact-form">
-                    <form id="contactForm" action="https://formsubmit.co/udita.kapoor04@gmail.com" method="POST">
-                        <input type="hidden" name="_subject" value="New Portfolio Contact Form Submission">
-                        <input type="hidden" name="_captcha" value="false">
-                        <input type="hidden" name="_next" value="https://uditakapoor.com/thank-you">
-                        <!-- Add honeypot to prevent spam -->
-                        <input type="text" name="_honey" style="display:none">
-                        <!-- Disable captcha -->
-                        <input type="hidden" name="_captcha" value="false">
-                        
-                        <div class="form-group">
-                            <label for="name">Name</label>
-                            <input type="text" id="name" name="name" required>
-                        </div>
-                        
-                        <div class="form-group">
-                            <label for="email">Email</label>
-                            <input type="email" id="email" name="email" required>
-                        </div>
-                        
-                        <div class="form-group">
-                            <label for="subject">Subject</label>
-                            <input type="text" id="subject" name="subject" required>
-                        </div>
-                        
-                        <div class="form-group">
-                            <label for="message">Message</label>
-                            <textarea id="message" name="message" required></textarea>
-                        </div>
-                        
-                        <button type="submit" class="btn">Send Message</button>
-                        
-                        <div id="formSuccess" class="form-success hidden">
-                            Your message has been sent successfully!
-                        </div>
-                        <div id="formError" class="form-error hidden">
-                            Failed to send message. Please try again later.
-                        </div>
-                    </form>
-                    
-                    <script>
-                        // Add form submission handler for user feedback
-                        document.getElementById('contactForm').addEventListener('submit', function(e) {
-                            // FormSubmit will handle the actual submission, this is just for user feedback
-                            localStorage.setItem('formSubmitted', 'true');
-                            
-                            // The form will redirect to the thank-you page as specified in _next
-                            // No need to prevent default behavior
-                        });
-                        
-                        // Check if coming back from form submission (from thank-you page)
-                        document.addEventListener('DOMContentLoaded', function() {
-                            const urlParams = new URLSearchParams(window.location.search);
-                            const formStatus = urlParams.get('form');
-                            
-                            if (formStatus === 'success' || localStorage.getItem('formSubmitted') === 'true') {
-                                document.getElementById('formSuccess').classList.remove('hidden');
-                                localStorage.removeItem('formSubmitted');
-                            }
-                            
-                            if (formStatus === 'error') {
-                                document.getElementById('formError').classList.remove('hidden');
-                            }
-                        });
-                    </script>
-                </div>
+                <!-- Contact form removed -->
             </div>
         </div>
     </section>
@@ -843,21 +841,7 @@
         </div>
     </footer>
 
-    <!-- Resume Modal -->
-    <div id="resumeModal" class="modal">
-        <div class="modal-content">
-            <span id="resumeModalClose" class="modal-close">&times;</span>
-            <div class="modal-header">
-                <h2>Professional Resume</h2>
-                <p class="modal-subtitle">Click anywhere outside or use the X button to close</p>
-            </div>
-            <div class="modal-body">
-                <div class="resume-container">
-                    <img src="./images/Screenshot 2025-03-17 193830.png" alt="Udita Kapoor Resume" class="resume-image">
-                </div>
-            </div>
-        </div>
-    </div>
+    <!-- Resume Modal - Removed for photo-based portfolio -->
 
     <!-- Portfolio Modal HTML Structure -->
     <div id="portfolioModal" class="modal">
@@ -1057,23 +1041,197 @@
         document.getElementById('currentYear').textContent = new Date().getFullYear();
     </script>
 
-    <!-- PDF Handling Guide (hidden, for development only) -->
-   
-        <button onclick="this.parentNode.style.display='none';" style="background: #ca9d75; border: none; color: white; padding: 5px 10px; border-radius: 4px; cursor: pointer;">Close</button>
-    </div>
+    <!-- Close head and begin body with interactive 3D intro -->
+    </head>
+    <body>
+        <!-- Dramatic 3D Dress Intro -->
+        <div class="loading-screen">
+            <div class="spotlight-container">
+                <div class="spotlight spotlight-1"></div>
+                <div class="spotlight spotlight-2"></div>
+                <div class="spotlight spotlight-3"></div>
+            </div>
+            <div class="dress-stage">
+                <div class="dress-3d-container">
+                    <div class="dress-wrapper">
+                        <div class="dress front main"></div>
+                        <!-- Front / Back main planes -->
+                        <div class="dress back main"></div>
+                        <!-- Edge slices removed to ensure a seamless front view -->
+                    </div>
+                </div>
 
-    <!-- For development only, show the PDF guide -->
-    <script>
-        // Only show in development
-        if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
-            document.getElementById('pdfGuide').style.display = 'block';
-            
-            // Hide after 8 seconds
-            setTimeout(() => {
-                const guide = document.getElementById('pdfGuide');
-                if (guide) guide.style.display = 'none';
-            }, 8000);
-        }
-    </script>
-</body>
+            </div>
+        </div>
+
+        <!-- Styles specific to the loading screen / 3D dress scene -->
+        <style>
+            .loading-screen {
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background: #000;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                z-index: 9999;
+                transition: opacity 0.8s ease;
+                overflow: hidden;
+            }
+
+            .dress-stage {
+                position: relative;
+                width: 100%;
+                height: 100%;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                perspective: 1500px;
+            }
+
+            .dress-3d-container {
+                width: 550px;
+                height: 820px;
+                position: relative;
+                transform-style: preserve-3d;
+                animation: floatDress 4s ease-in-out infinite;
+            }
+
+            @keyframes floatDress {
+                0%, 100% { transform: translateY(0px) rotateX(0deg); }
+                50% { transform: translateY(-20px) rotateX(0deg); }
+            }
+
+            .dress-wrapper {
+                width: 100%;
+                height: 100%;
+                position: relative;
+                transform-style: preserve-3d;
+                animation: rotateDress 8s infinite linear;
+                transform: rotateX(-10deg);
+            }
+
+            .dress {
+                position: absolute;
+                width: 100%;
+                height: 100%;
+                backface-visibility: hidden;
+                background-size: contain;
+                background-position: center;
+                background-repeat: no-repeat;
+                filter: drop-shadow(0 0 30px rgba(255,255,255,0.2));
+            }
+
+            .dress.front {
+                background-image: url('dress.png');
+                transform: translateZ(8px); /* move a little toward the viewer */
+            }
+
+            .dress.back {
+                background-image: url('dress back.png');
+                transform: translateZ(8px); /* face camera directly */
+            }
+
+            /* Edge slices removed to ensure a seamless front view */
+
+            @keyframes rotateDress {
+                0% { transform: rotateY(0deg); }
+                100% { transform: rotateY(360deg); }
+            }
+
+            /* Dramatic Spotlights */
+            .spotlight-container {
+                position: absolute;
+                width: 100%;
+                height: 100%;
+                pointer-events: none;
+            }
+
+            .spotlight {
+                position: absolute;
+                width: 300px;
+                height: 300px;
+                border-radius: 50%;
+                filter: blur(50px);
+                opacity: 0.15;
+                animation: moveLights 8s infinite ease-in-out;
+            }
+
+            .spotlight-1 {
+                background: radial-gradient(circle, #fff, transparent 70%);
+                top: -10%;
+                left: 30%;
+                animation-delay: 0s;
+            }
+
+            .spotlight-2 {
+                background: radial-gradient(circle, #caa78f, transparent 70%);
+                top: 40%;
+                right: -10%;
+                animation-delay: -2s;
+            }
+
+            .spotlight-3 {
+                background: radial-gradient(circle, #fff, transparent 70%);
+                bottom: -10%;
+                left: 40%;
+                animation-delay: -4s;
+            }
+
+            @keyframes moveLights {
+                0%, 100% { transform: translate(0, 0); }
+                25% { transform: translate(50px, 50px); }
+                50% { transform: translate(0, -50px); }
+                75% { transform: translate(-50px, 50px); }
+            }
+
+            /* Mobile Optimization */
+            @media (max-width: 768px) {
+                .dress-3d-container {
+                    width: 400px;
+                    height: 600px;
+                }
+
+                .spotlight {
+                    width: 200px;
+                    height: 200px;
+                }
+            }
+
+            /* Disable auto-rotation so JS can control the 3D dress */
+            .dress-wrapper {
+                animation: none !important;
+            }
+
+            /*===== Lighting illusion for curvature =====*/
+            .dress.main::before { /* highlight */
+                content:'';
+                position:absolute; inset:0;
+                background:radial-gradient(circle at 50% 40%, rgba(255,255,255,0.18) 0%, rgba(255,255,255,0) 60%);
+                pointer-events:none;
+            }
+            .dress.main::after { /* bottom shadow */
+                content:'';
+                position:absolute; inset:0;
+                background:radial-gradient(circle at 50% 140%, rgba(0,0,0,0.25) 0%, rgba(0,0,0,0) 70%);
+                pointer-events:none;
+            }
+
+            /* Edge slices removed to ensure a seamless front view */
+
+            /* Ground shadow */
+            .dress-3d-container::after {
+                content:'';
+                position:absolute; bottom:-10px; left:0; right:0;
+                height:30px; border-radius:50%;
+                background:radial-gradient(ellipse at center, rgba(0,0,0,0.35) 0%, rgba(0,0,0,0) 70%);
+                transform:translateZ(-1px);
+                pointer-events:none;
+            }
+        </style>
+
+        <!-- no auto-hide script -->
+    </body>
 </html> 

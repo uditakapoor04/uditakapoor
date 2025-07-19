@@ -4,17 +4,32 @@
   "main": "script.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node server.js"
+    "start": "node server.js",
+    "dev": "nodemon server.js",
+    "serve": "nodemon server.js --host 0.0.0.0"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "description": "",
+  "description": "A personal portfolio website showcasing Udita Kapoor's fashion design projects, skills, and contact information.",
   "dependencies": {
     "@sendgrid/mail": "^8.1.4",
     "dotenv": "^16.4.1",
     "express": "^4.21.2",
+    "gsap": "^3.13.0",
     "node-fetch": "^3.3.2",
-    "nodemailer": "^6.10.0"
-  }
+    "nodemailer": "^6.10.0",
+    "three": "^0.178.0"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.10"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/uditakapoor04/uditakapoor.git"
+  },
+  "bugs": {
+    "url": "https://github.com/uditakapoor04/uditakapoor/issues"
+  },
+  "homepage": "https://github.com/uditakapoor04/uditakapoor#readme"
 }
